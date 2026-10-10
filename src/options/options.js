@@ -15,17 +15,26 @@
   let settings = await Settings.load();
 
   let toastTimer = null;
-  function toast(text = 'Saved') {
+  function toast(text = 'Saved', ms = 1400) {
     const el = $('toast');
     el.textContent = text;
     el.classList.add('show');
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => el.classList.remove('show'), 1400);
+    toastTimer = setTimeout(() => el.classList.remove('show'), ms);
   }
 
   async function save(partial) {
-    await Settings.save(partial);
-    toast();
+    try {
+      await Settings.save(partial);
+      toast();
+    } catch (err) {
+      // Synced settings are limited in size (about 8 KB each), so a very long
+      // word or site list can be refused.
+      const tooBig = /quota/i.test(String(err?.message || err));
+      toast(tooBig ? "Couldn't save: that list is too long. Remove some entries." : "Couldn't save that change.", 5000);
+      settings = await Settings.load();
+      fill();
+    }
   }
 
   function wordList(text) {

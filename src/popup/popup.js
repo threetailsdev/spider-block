@@ -118,7 +118,12 @@
 
   $('site-toggle').addEventListener('click', async () => {
     if (!host) return;
-    await Settings.save({ disabledSites: [...new Set([...settings.disabledSites, host])] });
+    try {
+      await Settings.save({ disabledSites: [...new Set([...settings.disabledSites, host])] });
+    } catch {
+      // Synced settings are limited in size; the list of sites may be full.
+      $('detail').textContent = "Couldn't save. Remove some sites in Settings and try again.";
+    }
   });
 
   for (const button of document.querySelectorAll('[data-pause]')) {

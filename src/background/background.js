@@ -60,9 +60,9 @@ if (typeof importScripts === 'function' && typeof window === 'undefined') {
   // skips them for 98% of ordinary photos without missing any spider.
   const CORNER_GATE = 0.005;
 
-  async function scanImage(source, mode) {
+  async function scanImage(source, mode, pageUrl) {
     const started = Date.now();
-    const bitmap = await Images.load(source);
+    const bitmap = await Images.load(source, pageUrl);
     try {
       const first = Images.toPixels(bitmap, 'first');
       const scores = await Classifier.score(first.pixels, first.count);
@@ -82,7 +82,7 @@ if (typeof importScripts === 'function' && typeof window === 'undefined') {
     }
   }
 
-  function scan({ key, url, dataUrl, crops = 'adaptive' }) {
+  function scan({ key, url, dataUrl, crops = 'adaptive' }, pageUrl) {
     const cacheKey = `${crops}|${key || url}`;
     if (cache.has(cacheKey)) {
       const hit = cache.get(cacheKey);
@@ -90,7 +90,7 @@ if (typeof importScripts === 'function' && typeof window === 'undefined') {
       return Promise.resolve({ ...hit, cached: true });
     }
     if (inflight.has(cacheKey)) return inflight.get(cacheKey);
-    const job = withSlot(() => scanImage(dataUrl || url, crops))
+    const job = withSlot(() => scanImage(dataUrl || url, crops, pageUrl))
       .then((result) => {
         remember(cacheKey, result);
         return result;
@@ -279,9 +279,13 @@ if (typeof importScripts === 'function' && typeof window === 'undefined') {
   async function handle(msg, sender) {
     switch (msg?.type) {
       case 'scan':
-        return scan(msg);
+        // The frame asking: its own site's signed-in images may be fetched with cookies.
+        return scan(msg, sender.url || sender.tab?.url || '');
       case 'count':
         await setCount(sender, msg);
+        return { ok: true };
+      case 'pause-ended':
+        await refreshGlobalState();
         return { ok: true };
       case 'frame-info':
         // Lets an embedded frame know which site it is shown on.

@@ -48,11 +48,32 @@
     }
   }
 
-  async function load(url) {
+  // Hosts are related when one is the other or a subdomain of it
+  // (example.com, www.example.com and img.example.com, but not other.com).
+  function sameSite(a, b) {
+    return a === b || a.endsWith(`.${b}`) || b.endsWith(`.${a}`);
+  }
+
+  // Some sites only serve images to signed-in visitors, so a refused image is
+  // tried again with the user's cookies. Only for the site the page itself is on:
+  // a page can name any address as an image, and must not be able to send
+  // signed-in requests to other sites or to the user's own network.
+  function mayRetryWithCookies(url, pageUrl) {
+    try {
+      const image = new URL(url);
+      const page = new URL(pageUrl);
+      return /^https?:$/.test(page.protocol) && sameSite(image.hostname, page.hostname);
+    } catch {
+      return false;
+    }
+  }
+
+  async function load(url, pageUrl = '') {
     if (!/^(https?|data):/i.test(url)) throw new ScanError('unsupported-url');
     let res = await download(url, 'omit');
-    // Some sites only serve images to signed-in visitors.
-    if (res.status === 401 || res.status === 403) res = await download(url, 'include');
+    if ((res.status === 401 || res.status === 403) && mayRetryWithCookies(url, pageUrl)) {
+      res = await download(url, 'include');
+    }
     if (!res.blob) throw new ScanError(`http-${res.status}`);
     const { blob } = res;
     if (blob.size > MAX_BYTES) throw new ScanError('too-large');
