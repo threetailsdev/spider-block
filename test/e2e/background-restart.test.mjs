@@ -46,3 +46,24 @@ test('the badge keeps the count when the browser stops the idle background', asy
   await badgeIs('18');
   assert.equal(await badge(), '18');
 });
+
+test('the toolbar shows protection back on when a pause ends while the background is stopped', async () => {
+  // Only a page with no images, so nothing else wakes the background when the pause ends.
+  for (const open of browser.context.pages().slice(1)) await open.close();
+  const page = await browser.context.newPage();
+  await page.goto(server.origin + '/no-such-page.html');
+  await page.waitForFunction(() => document.documentElement.hasAttribute('data-sb-style'));
+  const ext = await browser.context.newPage();
+  await ext.goto(`chrome-extension://${browser.extensionId}/options/options.html`);
+  const title = () => ext.evaluate(() => chrome.action.getTitle({}));
+  await ext.evaluate(() => chrome.storage.sync.set({ pausedUntil: Date.now() + 3000 }));
+  for (let i = 0; i < 20 && (await title()) !== 'Spider Block (paused)'; i++) await page.waitForTimeout(100);
+  assert.equal(await title(), 'Spider Block (paused)');
+
+  const cdp = await browser.context.newCDPSession(ext);
+  await cdp.send('ServiceWorker.enable');
+  await cdp.send('ServiceWorker.stopAllWorkers');
+  // The page resumes on its own when the pause ends; it must also wake the background.
+  await page.waitForTimeout(4500);
+  assert.equal(await title(), 'Spider Block');
+});

@@ -804,7 +804,14 @@
     });
     const status = Settings.status(next, siteHost);
     clearTimeout(pauseTimer);
-    if (status === 'paused') pauseTimer = setTimeout(() => applySettings(settings), next.pausedUntil - Date.now() + 100);
+    if (status === 'paused') {
+      pauseTimer = setTimeout(() => {
+        // The background may have been stopped while idle and missed the end of
+        // the pause; this wakes it so the toolbar icon turns back on.
+        if (isTop) send({ type: 'pause-ended' }, 5000);
+        applySettings(settings);
+      }, next.pausedUntil - Date.now() + 100);
+    }
 
     const wasActive = active;
     active = status === 'on';
@@ -1313,6 +1320,27 @@
     reportCount(isTop);
     if (active && settings.useAI) send({ type: 'warm-up' }, 5000);
   }
+
+  // A frame that goes away (removed from the page, or navigated) stops counting
+  // towards the badge. A page restored from the back/forward cache counts again.
+  window.addEventListener('pagehide', () => {
+    if (!ready || destroyed) return;
+    clearTimeout(countTimer);
+    countTimer = null;
+    reportedCount = 0;
+    try {
+      api.runtime.sendMessage({ type: 'count', count: 0 }).catch(() => {});
+    } catch {
+      // the extension context is already gone
+    }
+  });
+  window.addEventListener('pageshow', (e) => {
+    if (!e.persisted || !ready || destroyed) return;
+    reportedCount = -1;
+    // The top frame starts the tab's count afresh, so its frames report a little later.
+    if (isTop) reportCount(true);
+    else countChanged();
+  });
 
   doc.addEventListener('DOMContentLoaded', () => ready && active && evaluatePage(), { once: true });
   window.addEventListener('load', () => ready && active && evaluatePage(), { once: true });

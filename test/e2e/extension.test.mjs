@@ -262,6 +262,38 @@ test('the toolbar badge counts hidden images', async () => {
   assert.equal(text, '9');
 });
 
+test('the badge stops counting an embedded frame once it is removed', async () => {
+  const page = await open('/words.html');
+  await states(page, ['alt', 'card', 'german', 'plain']);
+  const id = await tabId(browser.worker, server.origin + '/words.html');
+  const badge = () => browser.worker.evaluate((t) => chrome.action.getBadgeText({ tabId: t }), id);
+  const badgeIs = async (text) => {
+    for (let i = 0; i < 30 && (await badge()) !== text; i++) await page.waitForTimeout(300);
+    assert.equal(await badge(), text);
+  };
+  await badgeIs('9');
+  await page.evaluate((src) => {
+    const frame = document.createElement('iframe');
+    frame.id = 'extra';
+    frame.src = src;
+    document.body.append(frame);
+  }, server.origin + '/words.html');
+  await badgeIs('18');
+  await page.evaluate(() => document.getElementById('extra').remove());
+  await badgeIs('9');
+});
+
+test('the settings page says so when a list is too long to save', async () => {
+  const page = await browser.context.newPage();
+  await page.goto(`chrome-extension://${browser.extensionId}/options/options.html`);
+  // Synced settings hold about 8 KB each; 200 long words is well over that.
+  const words = Array.from({ length: 200 }, (_, i) => `word${i}-${'x'.repeat(60)}`).join('\n');
+  await page.locator('[data-key="customBlockWords"]').fill(words);
+  await page.locator('[data-key="customBlockWords"]').blur();
+  await page.waitForFunction(() => document.getElementById('toast').textContent.includes('too long'));
+  await page.close();
+});
+
 test('the AI scan checks every photo in a grid as it scrolls into view', async () => {
   const page = await open('/lazy-grid.html');
   const ids = Array.from({ length: 24 }, (_, i) => 'g' + i);

@@ -12,6 +12,7 @@ const FILE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '.
 function loader(fetch) {
   const context = vm.createContext({
     AbortController,
+    URL,
     fetch,
     setTimeout: (fn) => setTimeout(fn, 20),
     clearTimeout,
@@ -53,9 +54,28 @@ test('ordinary images still load, and errors keep their reasons', async () => {
   });
   assert.equal((await Images.load('https://example.com/a.png')).size, 32);
   calls = [];
-  assert.equal((await Images.load('https://example.com/private.png')).size, 32);
+  assert.equal((await Images.load('https://example.com/private.png', 'https://www.example.com/page')).size, 32);
   assert.deepEqual(calls, ['omit', 'include']);
   await assert.rejects(Images.load('https://example.com/missing.png'), (err) => err.message === 'http-404');
   await assert.rejects(Images.load('https://example.com/a.svg'), (err) => err.message === 'svg');
   await assert.rejects(Images.load('blob:https://example.com/x'), (err) => err.message === 'unsupported-url');
+});
+
+test("cookies are only sent to the page's own site", async () => {
+  const calls = [];
+  const Images = loader(async (url, { credentials }) => {
+    calls.push(`${new URL(url).hostname} ${credentials}`);
+    return new Response('', { status: credentials === 'omit' ? 403 : 200 });
+  });
+  const refused = (err) => err.message === 'http-403';
+  await assert.rejects(Images.load('https://bank.example/transfer', 'https://evil.test/page'), refused);
+  await assert.rejects(Images.load('http://192.168.0.1/reboot', 'https://evil.test/page'), refused);
+  await assert.rejects(Images.load('https://notexample.com/a.png', 'https://example.com/'), refused);
+  await assert.rejects(Images.load('https://example.com/a.png'), refused);
+  assert.deepEqual(calls, [
+    'bank.example omit',
+    '192.168.0.1 omit',
+    'notexample.com omit',
+    'example.com omit',
+  ]);
 });
