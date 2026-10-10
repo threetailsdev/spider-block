@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Photo grid</title></head>
+<body>
+  <h1>Photo grid</h1>
+  <div id="grid" style="display:grid;grid-template-columns:repeat(4,200px);gap:8px"></div>
+  <script>
+    const grid = document.getElementById('grid');
+    for (let i = 0; i < 24; i++) {
+      const img = document.createElement('img');
+      img.id = 'g' + i;
+      img.width = 200;
+      img.height = 140;
+      img.src = '/img/grid' + i + '.png?w=400&h=280&c=' + ['6aa3c8', '8fbf7a', 'd9a46b', 'b08fc9'][i % 4];
+      grid.append(img);
+    }
+  </script>
+</body>
+</html>

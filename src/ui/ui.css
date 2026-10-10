@@ -1,0 +1,286 @@
+/* Shared look for the popup, settings and welcome pages. */
+
+:root {
+  --bg: #f3f7f5;
+  --card: #ffffff;
+  --text: #1d2b27;
+  --muted: #586d66;
+  --accent: #2f6f5e;
+  --accent-strong: #245a4c;
+  --accent-soft: #e3f0eb;
+  --border: #d5e3dd;
+  --focus: #8cc7b4;
+  --warn-bg: #fff6e5;
+  --warn-text: #6b4a12;
+  --radius: 14px;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #141c1a;
+    --card: #1d2724;
+    --text: #e6efeb;
+    --muted: #a3b7b0;
+    --accent: #5fb39a;
+    --accent-strong: #7cc8b0;
+    --accent-soft: #23362f;
+    --border: #33473f;
+    --focus: #4f9c86;
+    --warn-bg: #3a3020;
+    --warn-text: #f1d9a8;
+    color-scheme: dark;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Elements styled with a display value would otherwise ignore the hidden attribute. */
+[hidden] {
+  display: none !important;
+}
+
+html,
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 15px/1.5 system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.25;
+  margin: 0 0 8px;
+}
+
+p {
+  margin: 0 0 10px;
+}
+
+a {
+  color: var(--accent);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.small {
+  font-size: 13px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+}
+
+.brand img {
+  width: 28px;
+  height: 28px;
+}
+
+button,
+.button {
+  font: inherit;
+  font-size: 14px;
+  border-radius: 10px;
+  padding: 9px 14px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+button:hover {
+  border-color: var(--accent);
+}
+
+button.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+@media (prefers-color-scheme: dark) {
+  button.primary {
+    color: #0d1a16;
+  }
+}
+
+button.primary:hover {
+  background: var(--accent-strong);
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+button[disabled] {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* Toggle switch: <label class="switch"><input type="checkbox"><span></span></label> */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 26px;
+  flex: none;
+}
+
+.switch input {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  cursor: pointer;
+}
+
+.switch span {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: #b9c7c2;
+  transition: background 0.15s;
+  pointer-events: none;
+}
+
+.switch span::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.15s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.switch input:checked + span {
+  background: var(--accent);
+}
+
+.switch input:checked + span::after {
+  transform: translateX(18px);
+}
+
+.switch input:focus-visible + span {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.notice {
+  background: var(--warn-bg);
+  color: var(--warn-text);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+}
+
+/* Previews of the ways a hidden image can look. */
+.style-picker {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.style-option {
+  position: relative;
+  display: block;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 8px;
+  cursor: pointer;
+  background: var(--card);
+}
+
+.style-option:has(input:checked) {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.style-option input {
+  position: absolute;
+  opacity: 0;
+}
+
+.style-option:has(input:focus-visible) {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.style-option .preview {
+  height: 84px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.style-option strong {
+  display: block;
+  font-size: 14px;
+}
+
+.style-option small {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.preview.cover {
+  background: url('../images/cover-shield.svg') center / 34px no-repeat, linear-gradient(135deg, #d4e7dd, #c2d8e2);
+}
+
+.preview.scene {
+  background: url('../images/scenes/4-mountain-lake.svg') center / cover;
+}
+
+.preview.hide {
+  border: 2px dashed var(--border);
+}
+
+.preview.blur {
+  background: url('../images/scenes/3-meadow.svg') center / cover;
+  filter: blur(9px) grayscale(0.6);
+  clip-path: inset(0 round 8px);
+}
+
+@media (prefers-color-scheme: dark) {
+  .preview.cover {
+    background: url('../images/cover-shield.svg') center / 34px no-repeat, linear-gradient(135deg, #2c3f3a, #2a3a44);
+  }
+}
+
+kbd {
+  font: 12px ui-monospace, SFMono-Regular, Menlo, monospace;
+  border: 1px solid var(--border);
+  border-bottom-width: 2px;
+  border-radius: 5px;
+  padding: 1px 5px;
+  background: var(--card);
+}

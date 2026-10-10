@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Unit tests
+        run: npm test
+      - name: Build all browsers
+        run: npm run build
+      - name: Lint the Firefox build
+        run: npx --yes web-ext@10 lint --source-dir dist/firefox
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: End-to-end tests (Chromium)
+        run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        with:
+          name: spider-block-packages
+          path: dist/*.zip

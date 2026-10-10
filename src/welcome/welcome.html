@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Welcome to Spider Block</title>
+    <link rel="stylesheet" href="../ui/ui.css" />
+    <link rel="stylesheet" href="welcome.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="hero">
+        <img src="../images/icon-128.png" alt="" width="88" height="88" />
+        <div>
+          <h1>Welcome to Spider Block</h1>
+          <p class="lead">From now on, pictures of spiders are hidden as you browse.</p>
+        </div>
+      </header>
+
+      <div class="notice" id="permission" hidden>
+        <p><strong>One more step:</strong> your browser needs your OK before Spider Block can protect websites.</p>
+        <button type="button" class="primary" id="grant">Allow on all websites</button>
+      </div>
+      <div class="notice" id="safari-permission" hidden>
+        <p>
+          <strong>One more step:</strong> in Safari, open <em>Settings → Extensions → Spider Block</em> and allow it on
+          all websites. Without this, Safari asks you on every site.
+        </p>
+      </div>
+
+      <section>
+        <h2>How it works</h2>
+        <div class="steps">
+          <div class="card">
+            <h3>Reads the words around pictures</h3>
+            <p class="muted">Captions, file names, titles and links, in more than 40 languages.</p>
+          </div>
+          <div class="card">
+            <h3>Looks at the picture itself</h3>
+            <p class="muted">An image-recognition model runs on your device. Nothing is uploaded anywhere.</p>
+          </div>
+          <div class="card">
+            <h3>Holds pictures back until checked</h3>
+            <p class="muted">So you don't catch a glimpse of a spider before it's hidden.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Choose how hidden images look</h2>
+        <p class="muted">You can change this any time in settings.</p>
+        <div class="style-picker" role="radiogroup" aria-label="How hidden images look">
+          <label class="style-option">
+            <input type="radio" name="style" value="cover" />
+            <div class="preview cover"></div>
+            <strong>Soft cover</strong>
+            <small>A calm tile with a small shield</small>
+          </label>
+          <label class="style-option">
+            <input type="radio" name="style" value="scene" />
+            <div class="preview scene"></div>
+            <strong>Calming picture</strong>
+            <small>Hills, sea, sky and other peaceful scenes</small>
+          </label>
+          <label class="style-option">
+            <input type="radio" name="style" value="hide" />
+            <div class="preview hide"></div>
+            <strong>Blank space</strong>
+            <small>The image simply disappears</small>
+          </label>
+          <label class="style-option">
+            <input type="radio" name="style" value="blur" />
+            <div class="preview blur"></div>
+            <strong>Heavy blur</strong>
+            <small>Shapes can sometimes still show through</small>
+          </label>
+        </div>
+      </section>
+
+      <section>
+        <h2>Good to know</h2>
+        <ul class="tips">
+          <li>
+            <strong>If a spider slips through,</strong> right-click it and choose <em>Hide this image</em>. It stays hidden
+            from then on. No filter is perfect, so this matters.
+          </li>
+          <li><strong>Hide everything at once</strong> with <kbd id="shortcut">Alt+Shift+H</kbd>. Press it again to bring the pictures back.</li>
+          <li><strong>Clicking a hidden image</strong> asks before showing it. You can turn showing off entirely in settings.</li>
+          <li><strong>The toolbar button</strong> lets you pause Spider Block or turn it off for one site.</li>
+          <li><strong>Spider-Man stays visible</strong> unless you change that in settings.</li>
+        </ul>
+      </section>
+
+      <footer class="actions">
+        <button type="button" id="settings">Open settings</button>
+        <button type="button" class="primary" id="done">Start browsing</button>
+      </footer>
+    </main>
+
+    <script src="../shared/browser-api.js"></script>
+    <script src="../shared/settings.js"></script>
+    <script src="welcome.js"></script>
+  </body>
+</html>

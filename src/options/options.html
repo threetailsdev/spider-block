@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Spider Block settings</title>
+    <link rel="stylesheet" href="../ui/ui.css" />
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="top">
+        <div class="brand"><img src="../images/icon-48.png" alt="" /><span>Spider Block settings</span></div>
+        <label class="master">
+          <span id="master-label">Protection on</span>
+          <span class="switch"><input type="checkbox" data-key="enabled" aria-labelledby="master-label" /><span></span></span>
+        </label>
+      </header>
+
+      <section class="card">
+        <h2>How hidden images look</h2>
+        <div class="style-picker" role="radiogroup" aria-label="How hidden images look">
+          <label class="style-option">
+            <input type="radio" name="style" value="cover" data-key="style" />
+            <div class="preview cover"></div>
+            <strong>Soft cover</strong>
+            <small>A calm tile with a small shield</small>
+          </label>
+          <label class="style-option">
+            <input type="radio" name="style" value="scene" data-key="style" />
+            <div class="preview scene"></div>
+            <strong>Calming picture</strong>
+            <small>Hills, sea, sky and other peaceful scenes</small>
+          </label>
+          <label class="style-option">
+            <input type="radio" name="style" value="hide" data-key="style" />
+            <div class="preview hide"></div>
+            <strong>Blank space</strong>
+            <small>The image simply disappears</small>
+          </label>
+          <label class="style-option">
+            <input type="radio" name="style" value="blur" data-key="style" />
+            <div class="preview blur"></div>
+            <strong>Heavy blur</strong>
+            <small>Shapes can sometimes still show through</small>
+          </label>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Seeing a hidden image</h2>
+        <p class="muted">Clicking a hidden image opens a small panel where you can choose to see it.</p>
+        <div class="choices">
+          <label><input type="radio" name="reveal" value="ask" data-key="reveal" /> Show it when I click <strong>Show image</strong></label>
+          <label><input type="radio" name="reveal" value="hold" data-key="reveal" /> Make me press and hold for a moment first</label>
+          <label><input type="radio" name="reveal" value="never" data-key="reveal" /> Never show hidden images (clicking them does nothing special)</label>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Finding spiders</h2>
+        <div class="setting">
+          <div>
+            <h3 id="l-hold">Hide images until they've been checked</h3>
+            <p class="muted small">Pictures may take a moment longer to appear, but you won't catch a glimpse of a spider before it's hidden.</p>
+          </div>
+          <span class="switch"><input type="checkbox" data-key="holdUntilChecked" aria-labelledby="l-hold" /><span></span></span>
+        </div>
+        <div class="setting">
+          <div>
+            <h3 id="l-text">Look for spider words</h3>
+            <p class="muted small">Checks alt text, captions, file names, titles and links around each image, in more than 40 languages.</p>
+          </div>
+          <span class="switch"><input type="checkbox" data-key="useText" aria-labelledby="l-text" /><span></span></span>
+        </div>
+        <div class="setting">
+          <div>
+            <h3 id="l-ai">Scan images on this device</h3>
+            <p class="muted small">
+              An image-recognition model built into Spider Block looks at each picture. Images never leave your
+              computer. <span id="engine"></span>
+            </p>
+          </div>
+          <span class="switch"><input type="checkbox" data-key="useAI" aria-labelledby="l-ai" /><span></span></span>
+        </div>
+        <div class="setting">
+          <div>
+            <h3><label for="sensitivity">Sensitivity</label></h3>
+            <p class="muted small" id="sensitivity-help"></p>
+          </div>
+          <select id="sensitivity" data-key="sensitivity">
+            <option value="relaxed">Relaxed</option>
+            <option value="balanced">Balanced</option>
+            <option value="strict">Strict</option>
+          </select>
+        </div>
+        <div class="setting">
+          <div>
+            <h3 id="l-pages">Hide every image on pages about spiders</h3>
+            <p class="muted small">For example a search for spiders, or an encyclopedia article about them.</p>
+          </div>
+          <span class="switch"><input type="checkbox" data-key="spiderPages" aria-labelledby="l-pages" /><span></span></span>
+        </div>
+        <div class="setting">
+          <div>
+            <h3><label for="unscannable">Images that can't be scanned</label></h3>
+            <p class="muted small">Some sites don't let extensions download their images.</p>
+          </div>
+          <select id="unscannable" data-key="unscannable">
+            <option value="show">Show them</option>
+            <option value="cover">Keep them covered</option>
+          </select>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>What to hide</h2>
+        <div class="choices">
+          <label><input type="checkbox" checked disabled /> Spiders, including tarantulas and daddy longlegs</label>
+          <label><input type="checkbox" data-key="blockWebs" /> Spider webs</label>
+          <label><input type="checkbox" data-key="blockOtherArachnids" /> Scorpions, ticks and mites</label>
+          <label><input type="checkbox" data-key="allowSpiderMan" /> Don't hide Spider-Man</label>
+        </div>
+        <div class="words">
+          <label>
+            <span>More words to hide <span class="muted small">(one per line)</span></span>
+            <textarea data-key="customBlockWords" rows="4" placeholder="e.g. creepy crawly"></textarea>
+          </label>
+          <label>
+            <span>Words that are fine <span class="muted small">(one per line)</span></span>
+            <textarea data-key="customAllowWords" rows="4" placeholder="e.g. spider mum"></textarea>
+          </label>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Extras</h2>
+        <div class="setting">
+          <div>
+            <h3 id="l-redact">Cover spider words in page text</h3>
+            <p class="muted small" id="redact-help">Words like “spider” are covered with a soft bar wherever they appear.</p>
+          </div>
+          <span class="switch"><input type="checkbox" data-key="redactWords" aria-labelledby="l-redact" /><span></span></span>
+        </div>
+        <div class="setting">
+          <div>
+            <h3 id="l-badge">Show how many images were hidden</h3>
+            <p class="muted small">A small number on the toolbar icon.</p>
+          </div>
+          <span class="switch"><input type="checkbox" data-key="showBadge" aria-labelledby="l-badge" /><span></span></span>
+        </div>
+        <div class="setting">
+          <div>
+            <h3>Hide everything at once</h3>
+            <p class="muted small">
+              Press <kbd id="shortcut">Alt+Shift+H</kbd> (or right-click and choose <em>Hide or show all images on this
+              page</em>) to instantly hide every image and video on the page. Press it again to bring them back. You can
+              change the shortcut in your browser's extension settings.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Sites where Spider Block is off</h2>
+        <ul class="sites" id="sites"></ul>
+        <form class="add-site" id="add-site">
+          <input type="text" id="site-input" placeholder="example.com" aria-label="Website to turn Spider Block off on" />
+          <button type="submit">Add</button>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2>Your corrections</h2>
+        <p class="muted small">
+          Right-click any image and choose <em>Hide this image</em> or <em>This isn't a spider</em>. Spider Block
+          remembers your choice on this device.
+        </p>
+        <div class="corrections">
+          <span id="corrections-text">No corrections yet.</span>
+          <button type="button" id="clear-corrections">Forget my corrections</button>
+        </div>
+      </section>
+
+      <footer class="muted small">
+        <p>
+          Spider Block works entirely on your device. It does not collect, send or sell anything. To check an image it
+          downloads that image again, the same way your browser did when showing it.
+        </p>
+        <p>No filter is perfect. If a spider slips through, right-click it and choose <em>Hide this image</em>.</p>
+        <p>Version <span id="version"></span> · <a href="../welcome/welcome.html">Welcome guide</a></p>
+      </footer>
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="../shared/browser-api.js"></script>
+    <script src="../shared/settings.js"></script>
+    <script src="options.js"></script>
+  </body>
+</html>

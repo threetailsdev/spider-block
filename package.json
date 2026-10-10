@@ -1,0 +1,33 @@
+{
+  "name": "spider-block",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A browser extension that hides spider images so people with arachnophobia can browse comfortably.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@tensorflow/tfjs-backend-cpu": "4.22.0",
+    "@tensorflow/tfjs-backend-wasm": "4.22.0",
+    "@tensorflow/tfjs-converter": "4.22.0",
+    "@tensorflow/tfjs-core": "4.22.0"
+  },
+  "devDependencies": {
+    "playwright": "1.56.1"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "build:chrome": "node scripts/build.mjs chrome",
+    "build:edge": "node scripts/build.mjs edge",
+    "build:firefox": "node scripts/build.mjs firefox",
+    "build:safari": "node scripts/build.mjs safari",
+    "test": "node --test \"test/unit/*.test.mjs\"",
+    "test:e2e": "npm run build:chrome && node --test --test-concurrency=1 \"test/e2e/*.test.mjs\"",
+    "test:ai": "npm run build:chrome && node --test test/ai.test.mjs",
+    "lint": "npm run build:firefox && npx --yes web-ext@10 lint --source-dir dist/firefox",
+    "icons": "node scripts/render-icons.mjs",
+    "model": "node scripts/fetch-model.mjs"
+  }
+}
