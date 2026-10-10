@@ -116,6 +116,26 @@ test('handles CSS background images and images inside shadow DOM', async () => {
   assert.equal(pos, '-99999px -99999px');
 });
 
+test('hidden background images are rechecked by their own picture, not the cover', async () => {
+  const page = await open('/dynamic.html');
+  await states(page, ['bg', 'bg-plain']);
+  // A detection setting changes, so every image is checked again.
+  await setSettings(browser.worker, { sensitivity: 'strict' });
+  await page.waitForTimeout(2500);
+  assert.deepEqual((await states(page, ['bg'])).bg, { state: 'blocked', why: 'text' });
+
+  // A lazy loader swaps the real picture in while the placeholder is being checked.
+  await page.evaluate(() => {
+    const div = document.createElement('div');
+    div.id = 'lazy-bg';
+    div.style.cssText = 'width:300px;height:200px;background-image:url(/slow/placeholder.png?delay=1500)';
+    document.body.prepend(div);
+  });
+  await page.waitForFunction(() => document.getElementById('lazy-bg').getAttribute('data-sb') === 'pending');
+  await page.evaluate(() => (document.getElementById('lazy-bg').style.backgroundImage = 'url(/img/wolf-spider.png)'));
+  assert.deepEqual((await states(page, ['lazy-bg']))['lazy-bg'], { state: 'blocked', why: 'text' });
+});
+
 test('hides every image on a page about spiders, except small icons', async () => {
   const page = await open('/spider-page.html');
   const result = await states(page, ['one', 'two', 'logo']);

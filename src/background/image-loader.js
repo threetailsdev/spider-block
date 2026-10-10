@@ -26,13 +26,25 @@
 
   class ScanError extends Error {}
 
+  // The time limit covers reading the body too: a response that never ends (a
+  // webcam stream, a stalled server) must not hold a scan slot forever.
   async function download(url, credentials) {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
     try {
-      return await fetch(url, { signal: controller.signal, credentials, cache: 'force-cache' });
+      const res = await fetch(url, { signal: controller.signal, credentials, cache: 'force-cache' });
+      if (!res.ok) return { status: res.status, blob: null };
+      const type = res.headers.get('content-type') || '';
+      if (/svg/i.test(type)) throw new ScanError('svg');
+      if (/^multipart\//i.test(type)) throw new ScanError('stream');
+      if (Number(res.headers.get('content-length')) > MAX_BYTES) throw new ScanError('too-large');
+      return { status: res.status, blob: await res.blob() };
+    } catch (err) {
+      if (controller.signal.aborted) throw new ScanError('timeout');
+      throw err;
     } finally {
       clearTimeout(timer);
+      controller.abort(); // stops a body we did not read
     }
   }
 
@@ -41,10 +53,8 @@
     let res = await download(url, 'omit');
     // Some sites only serve images to signed-in visitors.
     if (res.status === 401 || res.status === 403) res = await download(url, 'include');
-    if (!res.ok) throw new ScanError(`http-${res.status}`);
-    const type = res.headers.get('content-type') || '';
-    if (/svg/i.test(type)) throw new ScanError('svg');
-    const blob = await res.blob();
+    if (!res.blob) throw new ScanError(`http-${res.status}`);
+    const { blob } = res;
     if (blob.size > MAX_BYTES) throw new ScanError('too-large');
     try {
       return await createImageBitmap(blob);
