@@ -11,8 +11,9 @@
   Spider Block reacts to. The checklist reads the marks Spider Block puts on each
   image and turns green when everything behaves as expected.
 
-  Open it straight from disk. In Chrome/Edge, first turn on "Allow access to file
-  URLs" in the extension's Details page.
+  In Chrome/Edge you can open it straight from disk after turning on "Allow access
+  to file URLs" in the extension's Details page. Firefox never runs extensions on
+  files opened from disk, so there it must be opened from a web address.
 -->
 <style>
   :root { --bg: #f3f7f5; --card: #fff; --text: #1d2b27; --muted: #586d66; --ok: #2f6f5e; --bad: #b4572f; --border: #d5e3dd; }
@@ -143,7 +144,9 @@
     if (!active && Date.now() - started > 4000) {
       status.className = 'status fail';
       status.textContent =
-        "The extension isn't running on this page. In Chrome/Edge, turn on \"Allow access to file URLs\" in the extension's Details page, then reload. In Firefox, check it's loaded in about:debugging and allowed on all websites.";
+        location.protocol === 'file:'
+          ? "The extension isn't running on this page. Firefox does not let extensions run on files opened from your computer, so open this page from a web address instead. In Chrome/Edge, turn on \"Allow access to file URLs\" in the extension's Details page, then reload."
+          : "The extension isn't running on this page. Check that it is installed, switched on, and allowed on all websites.";
     } else if (waiting) {
       status.className = 'status';
       status.textContent = `Checking… ${passed} of ${total} done`;

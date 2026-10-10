@@ -72,7 +72,9 @@
         $('headline').textContent = "Spider Block can't run on this page.";
         $('detail').textContent = host
           ? 'Reload the page to start protecting it.'
-          : 'Browser pages and extension stores are off-limits to all extensions.';
+          : tab?.url?.startsWith('file:')
+            ? 'This is a file on your computer. Firefox does not let extensions into these; in Chrome or Edge, turn on "Allow access to file URLs" in the extension\'s details.'
+            : 'Browser pages and extension stores are off-limits to all extensions.';
       }
       return;
     }
