@@ -55,6 +55,11 @@ main {
   font-size: 13px;
 }
 
+footer .links {
+  display: flex;
+  gap: 14px;
+}
+
 footer {
   display: flex;
   justify-content: space-between;

@@ -164,6 +164,23 @@ select {
   flex-wrap: wrap;
 }
 
+.donate {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.donate p {
+  margin: 0;
+  max-width: 52ch;
+}
+
+.donate .button {
+  flex: none;
+}
+
 footer p {
   margin: 0 0 6px;
 }

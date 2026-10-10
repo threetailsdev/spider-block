@@ -112,7 +112,11 @@
     return 'on';
   }
 
+  // Where the "Donate" buttons lead. While empty, they stay hidden.
+  const DONATE_URL = '';
+
   root.SpiderBlockSettings = Object.freeze({
+    DONATE_URL,
     DEFAULTS,
     SENSITIVITY,
     load,

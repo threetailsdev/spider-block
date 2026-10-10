@@ -38,6 +38,11 @@
     // no keyboard shortcuts on this platform
   }
 
+  if (Settings.DONATE_URL) {
+    $('donate-link').href = Settings.DONATE_URL;
+    $('donate').hidden = false;
+  }
+
   $('settings').addEventListener('click', () => api.runtime.openOptionsPage());
   $('done').addEventListener('click', async () => {
     const tab = await api.tabs.getCurrent();

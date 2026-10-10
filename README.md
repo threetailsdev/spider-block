@@ -135,6 +135,12 @@ Spider Block does not collect, store or send any personal data, and has no serve
 - **Gentle exposure mode** (opt-in, ideally designed with therapists): gradually reveal blurred or cartoon versions for people working on their fear.
 - **Translations** of the extension's pages.
 
+## Support
+
+Spider Block is free and always will be. If it helps you, you can support it with a donation on Ko-fi. The settings page, the toolbar popup and the welcome page each have a small, optional Donate link. There are no pop-ups or reminders.
+
+The link lives in one place, `DONATE_URL` in `src/shared/settings.js`. While it is empty, the Donate links stay hidden.
+
 ## License
 
 MIT, see [LICENSE](LICENSE). TensorFlow.js and the MobileNet v2 model are Apache-2.0, see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

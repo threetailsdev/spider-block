@@ -150,6 +150,15 @@
     }
   });
 
+  if (Settings.DONATE_URL) {
+    $('donate').hidden = false;
+    $('donate').addEventListener('click', (e) => {
+      e.preventDefault();
+      api.tabs.create({ url: Settings.DONATE_URL });
+      window.close();
+    });
+  }
+
   $('open-options').addEventListener('click', (e) => {
     e.preventDefault();
     api.runtime.openOptionsPage();

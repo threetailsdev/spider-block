@@ -65,6 +65,12 @@ Chrome small promo tile (440×280): `promo-440x280.png`. Store icon: `src/images
 
 **Privacy policy URL**: <https://github.com/kolmstead17/spider-block/blob/main/PRIVACY.md> (or wherever you publish PRIVACY.md).
 
+## Donations
+
+- **Firefox**: in the add-on's Developer Hub page, under *Edit Product Page → Support information*, set the **Contributions URL** to your Ko-fi page. Firefox then shows a "Support this developer" button on the listing.
+- **Chrome / Edge**: there is no donation field. The Donate links inside the extension are enough, and a line at the end of the description is fine: "Spider Block is free. If it helps you, you can support it on Ko-fi."
+- Keep donation requests low-key. Stores reject extensions that nag users or put payment prompts on web pages.
+
 ## Firefox (AMO) notes
 
 - The manifest declares `data_collection_permissions: { required: ["none"] }`.

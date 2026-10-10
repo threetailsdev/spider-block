@@ -160,6 +160,11 @@
 
   $('version').textContent = api.runtime.getManifest().version;
 
+  if (Settings.DONATE_URL) {
+    $('donate-link').href = Settings.DONATE_URL;
+    $('donate').hidden = false;
+  }
+
   Settings.onChange((next) => {
     settings = next;
     fill();
