@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Extension self-check (safe test page)</title>
+<!--
+  A page for checking that Spider Block works in your browser WITHOUT any spider
+  pictures. Every "photo" here is a plain coloured tile. Some tiles are described
+  with spider words (in their alt text, caption, link or title), which is what
+  Spider Block reacts to. The checklist reads the marks Spider Block puts on each
+  image and turns green when everything behaves as expected.
+
+  In Chrome/Edge you can open it straight from disk after turning on "Allow access
+  to file URLs" in the extension's Details page. Firefox never runs extensions on
+  files opened from disk, so there it must be opened from a web address.
+-->
+<style>
+  :root { --bg: #f3f7f5; --card: #fff; --text: #1d2b27; --muted: #586d66; --ok: #2f6f5e; --bad: #b4572f; --border: #d5e3dd; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #141c1a; --card: #1d2724; --text: #e6efeb; --muted: #a3b7b0; --ok: #6fc3a8; --bad: #f0a07a; --border: #33473f; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 1000px; margin: 0 auto; padding: 28px 16px 48px; }
+  h1 { font-size: 26px; margin: 0 0 6px; }
+  .lead { color: var(--muted); margin: 0 0 20px; }
+  .status { padding: 14px 16px; border-radius: 12px; border: 1px solid var(--border); background: var(--card); margin-bottom: 20px; font-weight: 600; }
+  .status.pass { border-color: var(--ok); color: var(--ok); }
+  .status.fail { border-color: var(--bad); color: var(--bad); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+  .tile { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 10px; }
+  .tile img { display: block; width: 100%; height: 140px; border-radius: 8px; object-fit: cover; }
+  .tile .what { font-size: 13px; margin-top: 8px; font-weight: 600; }
+  .tile .expect { font-size: 12px; color: var(--muted); }
+  .tile .result { font-size: 13px; margin-top: 4px; }
+  .tile .result.pass { color: var(--ok); }
+  .tile .result.fail { color: var(--bad); }
+  .tile h4, .tile figcaption { margin: 6px 0 0; font-size: 13px; font-weight: 400; color: var(--muted); }
+  figure { margin: 0; }
+  .next { margin-top: 28px; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; }
+  .next li { margin-bottom: 6px; }
+  kbd { font: 12px ui-monospace, monospace; border: 1px solid var(--border); border-bottom-width: 2px; border-radius: 5px; padding: 1px 5px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Extension self-check</h1>
+  <p class="lead">There are no real photos on this page, only coloured tiles. Some are described in ways the extension should react to.</p>
+
+  <div class="status" id="status">Waiting for the extension…</div>
+
+  <div class="grid" id="grid">
+    <div class="tile" data-expect="hidden" data-what="Its description (alt text)">
+      <img data-colour="#d9785b" alt="A large spider on the wall">
+    </div>
+    <div class="tile" data-expect="hidden" data-what="The caption under it">
+      <figure><img data-colour="#8a7a6a"><figcaption>Found a huntsman in the car</figcaption></figure>
+    </div>
+    <div class="tile" data-expect="hidden" data-what="Where it links to">
+      <a href="https://en.wikipedia.org/wiki/Tarantula" onclick="return false"><img data-colour="#7fae6a"></a>
+    </div>
+    <div class="tile" data-expect="hidden" data-what="A title next to it, like a video tile">
+      <img data-colour="#b08fc9"><h4>Massive orb weaver on the porch</h4>
+    </div>
+    <div class="tile" data-expect="hidden" data-what="Another language (Spanish)">
+      <img data-colour="#6aa3c8" alt="Una araña en la pared">
+    </div>
+    <div class="tile" data-expect="visible" data-what="Spider-Man">
+      <img data-colour="#d65a5a" alt="Spider-Man swinging between buildings">
+    </div>
+    <div class="tile" data-expect="visible" data-what="A houseplant with a creepy name">
+      <img data-colour="#5f9e6e" alt="A spider plant on the windowsill">
+    </div>
+    <div class="tile" data-expect="visible" data-what="An ordinary picture (checked by the image scanner)">
+      <img data-colour="#e0b44f" alt="A sunny beach">
+    </div>
+    <div class="tile" data-expect="hidden" data-what="A picture added after the page loaded" id="late"></div>
+  </div>
+
+  <div class="next">
+    <strong>When the checklist is green, try these:</strong>
+    <ol>
+      <li>Click a hidden tile: a small panel asks whether to show it.</li>
+      <li>Press <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>H</kbd>: every tile disappears. Press it again to bring them back.</li>
+      <li>Right-click the beach tile and choose <em>Spider Block → Hide this image</em>. It stays hidden after a reload.</li>
+      <li>Open the extension's settings. Under <em>Scan images on this device</em> it should say <em>Status: ready</em>, which means the image scanner works in this browser.</li>
+    </ol>
+  </div>
+</main>
+
+<script>
+  // Plain coloured PNG tiles, drawn here so the image scanner has a real picture to check.
+  function tile(colour) {
+    const c = document.createElement('canvas');
+    c.width = 400;
+    c.height = 260;
+    const g = c.getContext('2d');
+    g.fillStyle = colour;
+    g.fillRect(0, 0, 400, 260);
+    g.fillStyle = 'rgba(255,255,255,0.25)';
+    g.beginPath();
+    g.moveTo(0, 260);
+    g.lineTo(260, 0);
+    g.lineTo(400, 0);
+    g.lineTo(140, 260);
+    g.fill();
+    return c.toDataURL('image/png');
+  }
+  for (const img of document.querySelectorAll('img[data-colour]')) img.src = tile(img.dataset.colour);
+
+  setTimeout(() => {
+    const img = document.createElement('img');
+    img.alt = 'Jumping spider macro photo';
+    img.src = tile('#c98fa8');
+    document.getElementById('late').prepend(img);
+  }, 1500);
+
+  // Read the marks Spider Block puts on each image (data-sb="ok|blocked|…").
+  const started = Date.now();
+  function check() {
+    const active = document.documentElement.hasAttribute('data-sb-style');
+    let passed = 0;
+    let total = 0;
+    let waiting = 0;
+    for (const t of document.querySelectorAll('.tile')) {
+      total++;
+      const img = t.querySelector('img');
+      const state = img?.getAttribute('data-sb');
+      const done = state && state !== 'pending';
+      const hidden = state === 'blocked';
+      const ok = done && (t.dataset.expect === 'hidden') === hidden;
+      if (ok) passed++;
+      if (!done) waiting++;
+      let line = t.querySelector('.result');
+      if (!line) {
+        t.insertAdjacentHTML('beforeend', `<div class="what">${t.dataset.what}</div><div class="expect">Should be ${t.dataset.expect}</div><div class="result"></div>`);
+        line = t.querySelector('.result');
+      }
+      line.className = 'result ' + (done ? (ok ? 'pass' : 'fail') : '');
+      line.textContent = !done ? 'Checking…' : ok ? `✓ ${hidden ? 'Hidden' : 'Visible'}` : `✗ ${hidden ? 'Hidden' : 'Visible'}`;
+    }
+    const status = document.getElementById('status');
+    if (!active && Date.now() - started > 4000) {
+      status.className = 'status fail';
+      status.textContent =
+        location.protocol === 'file:'
+          ? "The extension isn't running on this page. Firefox does not let extensions run on files opened from your computer, so open this page from a web address instead. In Chrome/Edge, turn on \"Allow access to file URLs\" in the extension's Details page, then reload."
+          : "The extension isn't running on this page. Check that it is installed, switched on, and allowed on all websites.";
+    } else if (waiting) {
+      status.className = 'status';
+      status.textContent = `Checking… ${passed} of ${total} done`;
+    } else {
+      status.className = 'status ' + (passed === total ? 'pass' : 'fail');
+      status.textContent = passed === total ? `✓ All ${total} checks passed. The extension is working in this browser.` : `${total - passed} of ${total} checks failed (marked ✗ below).`;
+    }
+  }
+  setInterval(check, 400);
+  check();
+</script>
+</body>
+</html>

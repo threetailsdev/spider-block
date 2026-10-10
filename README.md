@@ -96,6 +96,8 @@ node scripts/screenshots.mjs   # re-take docs/screenshots (spider-free demo page
 
 The end-to-end tests use only generated colour blocks: the "spiders" in them are words in alt text, captions and file names.
 
+To check an installed copy by hand, open [`test/manual/safe-test.html`](test/manual/safe-test.html) in the browser. It contains no spider pictures and shows a live checklist of what the extension hid. In Chrome or Edge, first turn on *Allow access to file URLs* in the extension's Details page. Firefox never runs extensions on files opened from disk, so in Firefox open the page from a web address (for example GitHub Pages, or `npx http-server test/manual`).
+
 > **Warning:** `npm run test:ai` downloads real spider photos into `test/.spider-photos/` (git-ignored, neutral file names) to check the image recognition end to end. Nothing is displayed, but avoid opening that folder.
 
 ```
