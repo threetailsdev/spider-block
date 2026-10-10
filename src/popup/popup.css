@@ -1,0 +1,64 @@
+body {
+  width: 330px;
+  padding: 14px;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.status {
+  padding: 14px 16px;
+}
+
+.status .headline {
+  font-weight: 650;
+  margin-bottom: 2px;
+}
+
+.status .small:empty {
+  display: none;
+}
+
+.status button {
+  margin-top: 8px;
+  width: 100%;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pause {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pause span {
+  flex: 1;
+}
+
+.pause button {
+  padding: 6px 10px;
+  font-size: 13px;
+}
+
+footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+  font-size: 14px;
+}

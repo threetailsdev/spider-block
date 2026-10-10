@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Feed</title></head>
+<body>
+  <h1>Latest posts</h1>
+  <img id="swap" src="/img/sunset.png" alt="Sunset">
+  <div id="later-card"><img id="late-title" src="/img/n.png"><h3 id="slot"></h3></div>
+  <div id="feed"></div>
+  <img id="slow" src="/slow/q.png?delay=1500" alt="Lake at dawn">
+  <div id="bg" style="width:300px;height:200px;background-image:url(/img/garden-spider-web.png)"></div>
+  <div id="bg-plain" style="width:300px;height:200px;background-image:url(/img/meadow.png?c=8fbf7a)"></div>
+  <div id="host"></div>
+  <script>
+    customElements.define('photo-card', class extends HTMLElement {
+      constructor() {
+        super();
+        this.attachShadow({ mode: 'open' }).innerHTML =
+          '<figure><img data-test="shadow" src="/img/shadow.png" alt="Jumping spider macro photo"></figure>';
+      }
+    });
+    document.getElementById('host').append(document.createElement('photo-card'));
+  </script>
+</body>
+</html>

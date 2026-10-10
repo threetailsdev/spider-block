@@ -1,0 +1,117 @@
+/* Spider Block page styles. Injected into every page before it renders, so images
+   can be held back until they have been checked. Nothing here applies until the
+   content script marks the page (html[data-sb-...]) or an image (data-sb).
+   Image placeholders (between double percent signs) are replaced with inline
+   images by scripts/build.mjs. */
+
+/* ---- Hold images until they are checked ------------------------------------ */
+
+html[data-sb-shield] :is(img, input[type="image"], video):is(:not([data-sb]), [data-sb="pending"]),
+html[data-sb-shield] svg image:is(:not([data-sb]), [data-sb="pending"]) {
+  opacity: 0 !important;
+}
+
+html[data-sb-shield] [data-sb-kind="bg"][data-sb="pending"] {
+  background-image: none !important;
+}
+
+html[data-sb-shield] :is(img, video)[data-sb="ok"] {
+  animation: spider-block-fade-in 0.15s ease-out;
+}
+
+@keyframes spider-block-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* ---- Hidden images ------------------------------------------------------------- */
+
+html:not([data-sb-reveal="never"]) [data-sb="blocked"] {
+  cursor: pointer !important;
+}
+
+/* Cover: a calm tile with a small shield. object-position moves the picture
+   itself out of the element's box, so the page layout does not change. */
+html[data-sb-style="cover"] :is(img, input[type="image"], video)[data-sb="blocked"],
+html[data-sb-style="blur"] [data-sb-kind="bg"][data-sb="blocked"],
+html[data-sb-style="cover"] [data-sb-kind="bg"][data-sb="blocked"] {
+  object-position: -99999px -99999px !important;
+  background: url("%%shield%%") center / clamp(14px, 32%, 56px) no-repeat,
+    linear-gradient(135deg, #d4e7dd, #c2d8e2) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  html[data-sb-style="cover"] :is(img, input[type="image"], video)[data-sb="blocked"],
+  html[data-sb-style="blur"] [data-sb-kind="bg"][data-sb="blocked"],
+  html[data-sb-style="cover"] [data-sb-kind="bg"][data-sb="blocked"] {
+    background: url("%%shield%%") center / clamp(14px, 32%, 56px) no-repeat,
+      linear-gradient(135deg, #2c3f3a, #2a3a44) !important;
+  }
+}
+
+/* Calming picture: one of a few peaceful scenes, chosen per image. */
+html[data-sb-style="scene"] :is(img, input[type="image"], video)[data-sb="blocked"],
+html[data-sb-style="scene"] [data-sb-kind="bg"][data-sb="blocked"] {
+  object-position: -99999px -99999px !important;
+  background: url("%%scene-0%%") center / cover no-repeat #cfe1d8 !important;
+}
+html[data-sb-style="scene"] [data-sb="blocked"][data-sb-scene="1"] {
+  background-image: url("%%scene-1%%") !important;
+}
+html[data-sb-style="scene"] [data-sb="blocked"][data-sb-scene="2"] {
+  background-image: url("%%scene-2%%") !important;
+}
+html[data-sb-style="scene"] [data-sb="blocked"][data-sb-scene="3"] {
+  background-image: url("%%scene-3%%") !important;
+}
+html[data-sb-style="scene"] [data-sb="blocked"][data-sb-scene="4"] {
+  background-image: url("%%scene-4%%") !important;
+}
+html[data-sb-style="scene"] [data-sb="blocked"][data-sb-scene="5"] {
+  background-image: url("%%scene-5%%") !important;
+}
+
+/* Blank space: the image disappears but keeps its place. */
+html[data-sb-style="hide"] :is(img, input[type="image"], video)[data-sb="blocked"] {
+  visibility: hidden !important;
+}
+html[data-sb-style="hide"] [data-sb-kind="bg"][data-sb="blocked"] {
+  background-image: none !important;
+}
+
+/* Heavy blur. */
+html[data-sb-style="blur"] :is(img, input[type="image"], video)[data-sb="blocked"] {
+  filter: blur(36px) grayscale(0.6) !important;
+  clip-path: inset(0) !important;
+}
+
+/* SVG images cannot show a cover, so they are simply hidden. */
+html[data-sb-style] svg image[data-sb="blocked"] {
+  opacity: 0 !important;
+}
+html[data-sb-style="blur"] svg image[data-sb="blocked"] {
+  opacity: 1 !important;
+  filter: blur(36px) !important;
+}
+
+/* ---- Hide every image on the page (keyboard shortcut / menu) ------------------- */
+
+html[data-sb-panic] :is(img, picture, video, canvas, iframe, embed, object, input[type="image"]),
+html[data-sb-panic] svg image {
+  visibility: hidden !important;
+}
+
+html[data-sb-panic] *,
+html[data-sb-panic] *::before,
+html[data-sb-panic] *::after {
+  background-image: none !important;
+}
+
+/* ---- Spider words in page text (optional) -------------------------------------- */
+
+::highlight(spider-block-words) {
+  color: transparent;
+  background-color: rgba(104, 145, 131, 0.5);
+  text-decoration: none;
+}

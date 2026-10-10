@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Spider Block</title>
+    <link rel="stylesheet" href="../ui/ui.css" />
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header>
+      <div class="brand"><img src="../images/icon-48.png" alt="" />Spider Block</div>
+      <label class="switch" title="Turn Spider Block on or off everywhere">
+        <input type="checkbox" id="enabled" aria-label="Spider Block on" />
+        <span></span>
+      </label>
+    </header>
+
+    <main>
+      <section class="card status" id="status" aria-live="polite">
+        <p class="headline" id="headline">Checking this page…</p>
+        <p class="muted small" id="detail"></p>
+        <button type="button" id="page-override" hidden>Only hide images that look like spiders</button>
+        <button type="button" id="resume" class="primary" hidden>Turn protection back on</button>
+      </section>
+
+      <section class="actions">
+        <button type="button" id="panic" class="primary">Hide all images on this page</button>
+        <button type="button" id="site-toggle">Turn off on this site</button>
+        <div class="pause" id="pause-row">
+          <span class="muted small">Pause everywhere:</span>
+          <button type="button" data-pause="15">15 min</button>
+          <button type="button" data-pause="60">1 hour</button>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <a href="#" id="open-options">Settings</a>
+      <span class="muted small" id="shortcut"></span>
+    </footer>
+
+    <script src="../shared/browser-api.js"></script>
+    <script src="../shared/settings.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

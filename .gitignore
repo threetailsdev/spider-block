@@ -1,0 +1,7 @@
+node_modules/
+dist/
+# Photos downloaded by the opt-in AI test (test/ai.test.mjs). They show spiders:
+# never commit them, and you probably don't want to open them.
+test/.spider-photos/
+*.log
+.DS_Store
