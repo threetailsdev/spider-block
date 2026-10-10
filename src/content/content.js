@@ -174,11 +174,14 @@
     return 'bg';
   }
 
-  function backgroundUrl(el) {
-    const bg = getComputedStyle(el).backgroundImage;
+  function cssUrl(bg) {
     if (!bg || bg === 'none') return '';
     const m = /url\((['"]?)(.*?)\1\)/.exec(bg);
     return m ? m[2] : '';
+  }
+
+  function backgroundUrl(el) {
+    return cssUrl(getComputedStyle(el).backgroundImage);
   }
 
   function sourceOf(el, kind) {
@@ -191,8 +194,14 @@
         return absolute(el.getAttribute('href') || el.getAttributeNS('http://www.w3.org/1999/xlink', 'href') || '');
       default: {
         // While hidden, the computed background is our own cover, not the page's image.
+        // The element's own style attribute still holds the page's background (outside
+        // shadow DOM, where the cover is not set inline), so a lazy loader or slideshow
+        // swapping it in is noticed.
         const state = el.getAttribute(ATTR);
-        if ((state === 'blocked' || state === 'pending') && urlOf.has(el)) return urlOf.get(el);
+        if ((state === 'blocked' || state === 'pending') && urlOf.has(el)) {
+          const own = el.getRootNode() === doc ? cssUrl(el.style.backgroundImage) : '';
+          return own ? absolute(own) : urlOf.get(el);
+        }
         return absolute(backgroundUrl(el));
       }
     }
@@ -341,13 +350,14 @@
 
   // ------------------------------------------------------------- the checks
 
-  function process(el) {
+  // `again`: decide afresh even if the image has not changed.
+  function process(el, again = false) {
     if (!ready || !active || destroyed) return;
     try {
       const kind = kindOf(el);
       const url = sourceOf(el, kind);
       const state = el.getAttribute(ATTR);
-      if (state && state !== 'pending' && urlOf.get(el) === url) return;
+      if (!again && state && state !== 'pending' && urlOf.get(el) === url) return;
       if (kind === 'bg' && !url && !state) return;
       urlOf.set(el, url);
       decide(el, kind, url);
@@ -682,7 +692,7 @@
       case 'srcset':
       case 'poster':
         if (el.matches(MEDIA)) process(el);
-        else if (el.localName === 'source') el.parentElement?.querySelectorAll('img, video').forEach(process);
+        else if (el.localName === 'source') el.parentElement?.querySelectorAll('img, video').forEach((media) => process(media));
         break;
       case 'href':
         if (el.localName === 'image') process(el);
@@ -714,8 +724,8 @@
     for (const el of queryAll(`[${ATTR}]`)) {
       if (el.getAttribute(ATTR) === 'revealed') continue;
       if (filter && !filter(el)) continue;
-      urlOf.delete(el);
-      process(el);
+      // The remembered URL is kept: a hidden background's computed style is our cover.
+      process(el, true);
     }
   }
 
@@ -1263,6 +1273,8 @@
   function destroy() {
     if (destroyed) return;
     destroyed = true;
+    // A pause ending later must not re-apply this copy's (stale) settings to the page.
+    clearTimeout(pauseTimer);
     observer.disconnect();
     visibility?.disconnect();
     unwatchSettings();

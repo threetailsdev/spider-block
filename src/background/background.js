@@ -106,6 +106,27 @@ if (typeof importScripts === 'function' && typeof window === 'undefined') {
   const tabCounts = new Map(); // tabId -> Map(frameId -> hidden image count)
   let showBadge = true;
 
+  // The browser stops this script when it is idle (service worker / event page),
+  // so the counts are also kept in session storage. Otherwise a frame reporting
+  // after a restart would replace the whole tab's count with its own.
+  const session = api.storage.session;
+  const countsLoaded = (async () => {
+    try {
+      const { tabCounts: saved } = (await session?.get('tabCounts')) || {};
+      for (const [tabId, frames] of Object.entries(saved || {})) {
+        tabCounts.set(Number(tabId), new Map(Object.entries(frames).map(([frameId, n]) => [Number(frameId), n])));
+      }
+    } catch {
+      // start counting from zero
+    }
+  })();
+
+  function saveCounts() {
+    const data = {};
+    for (const [tabId, frames] of tabCounts) data[tabId] = Object.fromEntries(frames);
+    session?.set({ tabCounts: data }).catch(() => {});
+  }
+
   function tabTotal(tabId) {
     let total = 0;
     for (const n of tabCounts.get(tabId)?.values() || []) total += n;
@@ -118,17 +139,22 @@ if (typeof importScripts === 'function' && typeof window === 'undefined') {
     api.action.setBadgeText({ tabId, text }).catch(() => {});
   }
 
-  function setCount(sender, msg) {
+  async function setCount(sender, msg) {
     const tabId = sender.tab?.id;
     if (tabId === undefined || tabId < 0) return;
+    await countsLoaded;
     // A fresh top-level page starts a new count for the tab.
     if (msg.reset && sender.frameId === 0) tabCounts.delete(tabId);
     if (!tabCounts.has(tabId)) tabCounts.set(tabId, new Map());
     tabCounts.get(tabId).set(sender.frameId ?? 0, Math.max(0, msg.count | 0));
+    saveCounts();
     updateBadge(tabId);
   }
 
-  api.tabs.onRemoved.addListener((tabId) => tabCounts.delete(tabId));
+  api.tabs.onRemoved.addListener(async (tabId) => {
+    await countsLoaded;
+    if (tabCounts.delete(tabId)) saveCounts();
+  });
 
   // Grey toolbar icon while protection is switched off or paused.
   let resumeTimer = null;
@@ -255,12 +281,13 @@ if (typeof importScripts === 'function' && typeof window === 'undefined') {
       case 'scan':
         return scan(msg);
       case 'count':
-        setCount(sender, msg);
+        await setCount(sender, msg);
         return { ok: true };
       case 'frame-info':
         // Lets an embedded frame know which site it is shown on.
         return { tabUrl: sender.tab?.url || '' };
       case 'tab-count':
+        await countsLoaded;
         return { count: tabTotal(msg.tabId) };
       case 'toggle-panic':
         // From the popup (names a tab) or from a page's own "show them again" bar.
