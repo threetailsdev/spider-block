@@ -158,6 +158,7 @@ if (typeof importScripts === 'function' && typeof window === 'undefined') {
 
   // Grey toolbar icon while protection is switched off or paused.
   let resumeTimer = null;
+  let pauseEndsAt = 0; // end of the pause the icon is showing, 0 if none
   function iconSet(name) {
     const sizes = [16, 32, 48, 128];
     return Object.fromEntries(sizes.map((s) => [s, `/images/${name}-${s}.png`]));
@@ -172,11 +173,25 @@ if (typeof importScripts === 'function' && typeof window === 'undefined') {
       title: !settings.enabled ? 'Spider Block (off)' : settings.pausedUntil > now ? 'Spider Block (paused)' : 'Spider Block',
     }).catch(() => {});
     clearTimeout(resumeTimer);
+    pauseEndsAt = 0;
     if (settings.enabled && settings.pausedUntil > now) {
+      pauseEndsAt = settings.pausedUntil;
       resumeTimer = setTimeout(refreshGlobalState, Math.min(settings.pausedUntil - now + 500, 2 ** 31 - 1));
     }
     for (const tabId of tabCounts.keys()) updateBadge(tabId);
   }
+
+  // The timer above dies when the browser stops this script while idle, and a
+  // web page only wakes it if one is open when the pause ends. Tab and window
+  // events need no extra permission and wake it too: a restarted script
+  // refreshes the icon as it starts, and a running one catches up here.
+  function catchUpPause() {
+    if (pauseEndsAt && Date.now() >= pauseEndsAt) refreshGlobalState().catch(() => {});
+  }
+  api.tabs.onActivated.addListener(catchUpPause);
+  api.tabs.onCreated.addListener(catchUpPause);
+  api.tabs.onUpdated.addListener(catchUpPause);
+  api.windows?.onFocusChanged.addListener(catchUpPause);
 
   // ----------------------------------------------------- hide-all ("panic")
 

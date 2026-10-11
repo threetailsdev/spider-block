@@ -2,7 +2,7 @@
 
 A browser extension for people with arachnophobia. It hides pictures of spiders as you browse, the way an ad blocker hides ads, so you can use the web without the scare.
 
-It works in **Firefox, Chrome, Edge and Safari** from one codebase, and it runs **entirely on your device**: no account, no tracking, and images are never uploaded anywhere.
+It works in **Firefox, Chrome and Edge** from one codebase, and it runs **entirely on your device**: no account, no tracking, and images are never uploaded anywhere.
 
 > This README and the extension's own pages contain no spider pictures. The screenshots below use plain colour blocks in place of photos.
 
@@ -33,33 +33,14 @@ You need [Node.js](https://nodejs.org/) 20 or newer.
 
 ```sh
 npm install
-npm run build          # builds dist/chrome, dist/edge, dist/firefox, dist/safari (+ zips)
+npm run build          # builds dist/chrome, dist/edge, dist/firefox (+ zips)
 ```
 
 **Firefox**: open `about:debugging#/runtime/this-firefox` → *Load Temporary Add-on…* → choose `dist/firefox/manifest.json`. Temporary add-ons are removed when Firefox restarts. To keep it installed, sign it for yourself: submit the zip to [addons.mozilla.org](https://addons.mozilla.org/developers/) as an *unlisted* add-on (free, usually approved automatically within minutes) and install the signed `.xpi` it gives you. Needs Firefox 140 or newer.
 
 **Chrome / Edge / Brave**: open `chrome://extensions` (or `edge://extensions`), turn on *Developer mode*, click *Load unpacked* and choose `dist/chrome` (or `dist/edge`).
 
-**Safari** (needs a Mac with Xcode):
-
-```sh
-xcrun safari-web-extension-converter dist/safari --app-name "Spider Block" --bundle-identifier com.example.spiderblock
-```
-
-Open the generated Xcode project, run it, then enable the extension in Safari → Settings → Extensions and allow it on all websites. For local testing without signing, turn on *Allow unsigned extensions* in Safari's Developer settings. The same project can target iPhone and iPad.
-
-## Sharing it with others
-
-Publishing to the official stores lets people install it with one click and get automatic updates. [docs/store-listing.md](docs/store-listing.md) has ready-to-paste descriptions, the permission justifications reviewers ask for, and the privacy answers.
-
-| Store | Cost | Upload | Notes |
-| --- | --- | --- | --- |
-| [Firefox Add-ons](https://addons.mozilla.org/developers/) | Free | `dist/spider-block-firefox-*.zip` | Reviewers may ask for the source: upload a zip of this repo; it builds with `npm ci && npm run build:firefox`. Change the add-on ID in `scripts/build.mjs` first if you want your own. |
-| [Chrome Web Store](https://chrome.google.com/webstore/devconsole) | $5 once | `dist/spider-block-chrome-*.zip` | Needs the privacy policy URL (you can link to [PRIVACY.md](PRIVACY.md) on GitHub). |
-| [Edge Add-ons](https://partner.microsoft.com/dashboard/microsoftedge/) | Free | `dist/spider-block-edge-*.zip` | |
-| Safari / App Store | $99/year Apple Developer Program | Xcode project (see above) | Submitted as a Mac (and optionally iOS) app through App Store Connect. |
-
-Bump `version` in `package.json` before each new upload.
+**Safari** is not supported yet. It may be added later; [docs/safari.md](docs/safari.md) has notes on what that would take.
 
 ## How it works
 
@@ -124,7 +105,7 @@ Spider Block does not collect, store or send any personal data, and has no serve
 - Images drawn on a `<canvas>`, inside closed shadow DOM, or in browser-internal pages can't be checked.
 - When the browser starts, the first images take a moment longer while the model loads.
 - Some sites refuse to send their images to extensions. You choose whether those are shown or kept covered.
-- **Tested**: Chrome/Chromium and Firefox desktop (automated end-to-end tests, Firefox 140 ESR and newer). **Firefox for Android** is not supported yet: it has no right-click menu, so a missed spider can't be hidden. **Safari** builds have not been tested. Please report problems.
+- **Tested**: Chrome/Chromium and Firefox desktop (automated end-to-end tests, Firefox 140 ESR and newer). **Firefox for Android** is not supported yet: it has no right-click menu, so a missed spider can't be hidden. Safari is not supported yet. Please report problems.
 
 ## Ideas for the future
 
@@ -136,6 +117,10 @@ Spider Block does not collect, store or send any personal data, and has no serve
 - **Other phobias**: the same engine could hide snakes, insects, needles or holes (trypophobia). ImageNet already covers several of these.
 - **Gentle exposure mode** (opt-in, ideally designed with therapists): gradually reveal blurred or cartoon versions for people working on their fear.
 - **Translations** of the extension's pages.
+
+## Support
+
+Spider Block is free and has no ads or tracking. If it helps you, you can [buy me a coffee on Ko-fi](https://ko-fi.com/threetailsdev). It's entirely optional and every feature stays free.
 
 ## License
 

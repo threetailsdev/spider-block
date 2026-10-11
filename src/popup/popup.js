@@ -5,6 +5,7 @@
   const api = globalThis.sbApi;
   const Settings = globalThis.SpiderBlockSettings;
   const $ = (id) => document.getElementById(id);
+  const IS_SAFARI = api.runtime.getURL('').startsWith('safari-web-extension:');
 
   let settings = await Settings.load();
   // ?tab=<id> shows the popup for a given tab (used to take screenshots).
@@ -64,10 +65,16 @@
     if (!state) {
       if (!(await hasSiteAccess())) {
         $('headline').textContent = 'Spider Block needs permission to protect websites.';
-        $('detail').textContent = 'Your browser asks before extensions can see web pages.';
-        $('resume').textContent = 'Allow on all websites';
-        $('resume').dataset.action = 'grant';
-        show('resume', true);
+        if (IS_SAFARI) {
+          // Safari grants website access in its own settings, not through a prompt.
+          $('detail').textContent =
+            "In Safari's settings, under Extensions → Spider Block, set Other Websites to Allow.";
+        } else {
+          $('detail').textContent = 'Your browser asks before extensions can see web pages.';
+          $('resume').textContent = 'Allow on all websites';
+          $('resume').dataset.action = 'grant';
+          show('resume', true);
+        }
       } else {
         $('headline').textContent = "Spider Block can't run on this page.";
         $('detail').textContent = host
