@@ -32,8 +32,15 @@
 
   try {
     const commands = (await api.commands?.getAll()) || [];
-    const shortcut = commands.find((c) => c.name === 'hide-all-images')?.shortcut;
-    if (shortcut) $('shortcut').textContent = shortcut;
+    const command = commands.find((c) => c.name === 'hide-all-images');
+    if (command?.shortcut) {
+      $('shortcut').textContent = command.shortcut;
+    } else if (command) {
+      // The browser leaves it unset when another extension already uses the keys.
+      const lead = document.createElement('strong');
+      lead.textContent = 'Hide everything at once';
+      $('shortcut-tip').replaceChildren(lead, " with a keyboard shortcut you can choose in your browser's extension settings.");
+    }
   } catch {
     // no keyboard shortcuts on this platform
   }
