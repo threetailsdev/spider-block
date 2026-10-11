@@ -42,18 +42,6 @@ npm run build          # builds dist/chrome, dist/edge, dist/firefox (+ zips)
 
 **Safari** is not supported yet. It may be added later; [docs/safari.md](docs/safari.md) has notes on what that would take.
 
-## Sharing it with others
-
-Publishing to the official stores lets people install it with one click and get automatic updates. [docs/store-listing.md](docs/store-listing.md) has ready-to-paste descriptions, the permission justifications reviewers ask for, and the privacy answers.
-
-| Store | Cost | Upload | Notes |
-| --- | --- | --- | --- |
-| [Firefox Add-ons](https://addons.mozilla.org/developers/) | Free | `dist/spider-block-firefox-*.zip` | Reviewers may ask for the source: upload a zip of this repo; it builds with `npm ci && npm run build:firefox`. Change the add-on ID in `scripts/build.mjs` first if you want your own. |
-| [Chrome Web Store](https://chrome.google.com/webstore/devconsole) | $5 once | `dist/spider-block-chrome-*.zip` | Needs the privacy policy URL (you can link to [PRIVACY.md](PRIVACY.md) on GitHub). |
-| [Edge Add-ons](https://partner.microsoft.com/dashboard/microsoftedge/) | Free | `dist/spider-block-edge-*.zip` | |
-
-Bump `version` in `package.json` before each new upload.
-
 ## How it works
 
 ```
@@ -127,6 +115,10 @@ Spider Block does not collect, store or send any personal data, and has no serve
 - **Other phobias**: the same engine could hide snakes, insects, needles or holes (trypophobia). ImageNet already covers several of these.
 - **Gentle exposure mode** (opt-in, ideally designed with therapists): gradually reveal blurred or cartoon versions for people working on their fear.
 - **Translations** of the extension's pages.
+
+## Support
+
+Spider Block is free and has no ads or tracking. If it helps you, you can [buy me a coffee on Ko-fi](https://ko-fi.com/threetailsdev). It's entirely optional and every feature stays free.
 
 ## License
 
