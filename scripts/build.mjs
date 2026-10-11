@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // Builds the extension for each browser from one source tree.
 //
-//   node scripts/build.mjs                 all browsers
+//   node scripts/build.mjs                 Chrome, Edge and Firefox
+//   node scripts/build.mjs safari          Safari (not supported yet; see docs/safari.md)
 //   node scripts/build.mjs chrome firefox  only some
 //
 // Output: dist/<browser>/ (load it unpacked while developing) and
@@ -16,6 +17,8 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = path.join(ROOT, 'src');
 const DIST = path.join(ROOT, 'dist');
 const TARGETS = ['chrome', 'edge', 'firefox', 'safari'];
+// Built only when asked for by name.
+const UNSUPPORTED = new Set(['safari']);
 const FIREFOX_ID = 'spider-block@threetailsdev.github.io';
 
 // TensorFlow.js runs the image classifier. Copied unmodified from npm.
@@ -276,7 +279,7 @@ async function build(target, version, shared) {
 
 async function main() {
   const wanted = process.argv.slice(2);
-  const targets = wanted.length ? wanted : TARGETS;
+  const targets = wanted.length ? wanted : TARGETS.filter((t) => !UNSUPPORTED.has(t));
   for (const t of targets) if (!TARGETS.includes(t)) throw new Error(`Unknown browser "${t}". Use: ${TARGETS.join(', ')}`);
   const { version } = JSON.parse(await fs.readFile(path.join(ROOT, 'package.json'), 'utf8'));
   const imageAssets = await assets();

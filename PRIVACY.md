@@ -27,7 +27,7 @@ The second step is the same kind of request your browser already made to display
 - **Read and change data on all websites**: needed to find and hide spider images on the pages you visit, and to download images for the on-device check.
 - **Storage**: to remember your settings and corrections.
 - **Context menus**: for "Hide this image" and "This isn't a spider".
-- **Scripting** (Chrome, Edge and Safari): to start protecting tabs that were already open when Spider Block was installed or updated.
+- **Scripting** (Chrome and Edge): to start protecting tabs that were already open when Spider Block was installed or updated.
 
 ## Contact
 

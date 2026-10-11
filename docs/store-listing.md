@@ -102,8 +102,11 @@ No sign-in is required. After installing, open https://www.google.com/search?q=s
   Third-party library sources: `@tensorflow/tfjs-core`, `@tensorflow/tfjs-converter`, `@tensorflow/tfjs-backend-wasm` and `@tensorflow/tfjs-backend-cpu`, all version 4.22.0 on npm.
 - The model file (`model/`) can be reproduced with `node scripts/fetch-model.mjs`.
 
-## Safari / App Store notes
+## Safari / App Store notes (future)
 
-- Create the Xcode project with `xcrun safari-web-extension-converter dist/safari` and set your own bundle identifier and team.
+Safari is not supported yet. These notes are for if it is added later.
+
+- Build and packaging steps are in [safari.md](safari.md). Bundle ID: `io.github.threetailsdev.spiderblock`.
+- App icon: `docs/safari/app-icon-1024.png`.
 - App Store review asks for an app description and screenshots of the containing app. The generated app only explains how to enable the extension, which is acceptable.
 - Privacy "nutrition label": Data Not Collected.

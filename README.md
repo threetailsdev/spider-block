@@ -2,7 +2,7 @@
 
 A browser extension for people with arachnophobia. It hides pictures of spiders as you browse, the way an ad blocker hides ads, so you can use the web without the scare.
 
-It works in **Firefox, Chrome, Edge and Safari** from one codebase, and it runs **entirely on your device**: no account, no tracking, and images are never uploaded anywhere.
+It works in **Firefox, Chrome and Edge** from one codebase, and it runs **entirely on your device**: no account, no tracking, and images are never uploaded anywhere.
 
 > This README and the extension's own pages contain no spider pictures. The screenshots below use plain colour blocks in place of photos.
 
@@ -33,20 +33,14 @@ You need [Node.js](https://nodejs.org/) 20 or newer.
 
 ```sh
 npm install
-npm run build          # builds dist/chrome, dist/edge, dist/firefox, dist/safari (+ zips)
+npm run build          # builds dist/chrome, dist/edge, dist/firefox (+ zips)
 ```
 
 **Firefox**: open `about:debugging#/runtime/this-firefox` → *Load Temporary Add-on…* → choose `dist/firefox/manifest.json`. Temporary add-ons are removed when Firefox restarts. To keep it installed, sign it for yourself: submit the zip to [addons.mozilla.org](https://addons.mozilla.org/developers/) as an *unlisted* add-on (free, usually approved automatically within minutes) and install the signed `.xpi` it gives you. Needs Firefox 140 or newer.
 
 **Chrome / Edge / Brave**: open `chrome://extensions` (or `edge://extensions`), turn on *Developer mode*, click *Load unpacked* and choose `dist/chrome` (or `dist/edge`).
 
-**Safari** (needs a Mac with Xcode):
-
-```sh
-xcrun safari-web-extension-converter dist/safari --app-name "Spider Block" --bundle-identifier com.example.spiderblock
-```
-
-Open the generated Xcode project, run it, then enable the extension in Safari → Settings → Extensions and allow it on all websites. For local testing without signing, turn on *Allow unsigned extensions* in Safari's Developer settings. The same project can target iPhone and iPad.
+**Safari** is not supported yet. It may be added later; [docs/safari.md](docs/safari.md) has notes on what that would take.
 
 ## How it works
 
@@ -110,7 +104,7 @@ Spider Block does not collect, store or send any personal data, and has no serve
 - Images drawn on a `<canvas>`, inside closed shadow DOM, or in browser-internal pages can't be checked.
 - When the browser starts, the first images take a moment longer while the model loads.
 - Some sites refuse to send their images to extensions. You choose whether those are shown or kept covered.
-- **Tested**: Chrome/Chromium (automated end-to-end tests). The Firefox build passes Mozilla's official linter, but has not yet been run in Firefox by the automated tests. **Safari** builds have not been tested. Please report problems.
+- **Tested**: Chrome/Chromium (automated end-to-end tests). The Firefox build passes Mozilla's official linter, but has not yet been run in Firefox by the automated tests. Safari is not supported yet. Please report problems.
 
 ## Ideas for the future
 
