@@ -1,12 +1,12 @@
-# Safari
+# Safari (not supported yet)
 
-The Safari build has **not been run in Safari yet**. This page lists what is already in place, what to check the first time it runs, and how to get it onto the App Store.
+**Spider Block does not support Safari at the moment.** It may be added in the future. This page keeps the notes for that: what is already in place, what to check the first time it runs, and how to get it onto the App Store. The Safari build has never been run in Safari.
 
 Everything needs the [Apple Developer Program](https://developer.apple.com/programs/enroll/) ($99/year) except running it on your own Mac from Xcode.
 
 ## What the repo already does for Safari
 
-- `npm run build:safari` makes `dist/safari/` and `dist/spider-block-safari-<version>.zip`, with a Safari manifest: a non-persistent background page instead of a service worker (Safari on iPhone and iPad requires that), and Safari 16.4 as the minimum.
+- `npm run build:safari` (not part of the default `npm run build`) makes `dist/safari/` and `dist/spider-block-safari-<version>.zip`, with a Safari manifest: a non-persistent background page instead of a service worker (Safari on iPhone and iPad requires that), and Safari 16.4 as the minimum.
 - The welcome page and toolbar popup recognise Safari and explain where to allow the extension on all websites, because Safari grants website access in its settings rather than through a prompt.
 - APIs Safari lacks are optional in the code (badge text colour, keyboard shortcuts and the right-click menu on iPhone and iPad).
 - `docs/safari/app-icon-1024.png` is the 1024x1024 app icon the App Store requires (opaque, as Apple wants). `npm run icons` regenerates it.

@@ -82,7 +82,9 @@ Chrome small promo tile (440×280): `promo-440x280.png`. Store icon: `src/images
   Third-party library sources: `@tensorflow/tfjs-core`, `@tensorflow/tfjs-converter`, `@tensorflow/tfjs-backend-wasm` and `@tensorflow/tfjs-backend-cpu`, all version 4.22.0 on npm.
 - The model file (`model/`) can be reproduced with `node scripts/fetch-model.mjs`.
 
-## Safari / App Store notes
+## Safari / App Store notes (future)
+
+Safari is not supported yet. These notes are for if it is added later.
 
 - Build and packaging steps are in [safari.md](safari.md). Bundle ID: `io.github.threetailsdev.spiderblock`.
 - App icon: `docs/safari/app-icon-1024.png`.
