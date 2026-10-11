@@ -67,3 +67,23 @@ test('the toolbar shows protection back on when a pause ends while the backgroun
   await page.waitForTimeout(4500);
   assert.equal(await title(), 'Spider Block');
 });
+
+test('the toolbar shows protection back on when a pause ends with no web page open', async () => {
+  for (const open of browser.context.pages().slice(1)) await open.close();
+  const ext = await browser.context.newPage();
+  await ext.goto(`chrome-extension://${browser.extensionId}/options/options.html`);
+  const title = () => ext.evaluate(() => chrome.action.getTitle({}));
+  await ext.evaluate(() => chrome.storage.sync.set({ pausedUntil: Date.now() + 3000 }));
+  for (let i = 0; i < 20 && (await title()) !== 'Spider Block (paused)'; i++) await ext.waitForTimeout(100);
+  assert.equal(await title(), 'Spider Block (paused)');
+
+  const cdp = await browser.context.newCDPSession(ext);
+  await cdp.send('ServiceWorker.enable');
+  await cdp.send('ServiceWorker.stopAllWorkers');
+  await ext.waitForTimeout(4000);
+
+  // No content script runs in a blank tab, so only the tab events wake the background.
+  await browser.context.newPage();
+  for (let i = 0; i < 30 && (await title()) !== 'Spider Block'; i++) await ext.waitForTimeout(100);
+  assert.equal(await title(), 'Spider Block');
+});
