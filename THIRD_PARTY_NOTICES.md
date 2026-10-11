@@ -17,7 +17,7 @@ Source: https://github.com/tensorflow/tfjs
 
 ## MobileNet v2 image classifier
 
-Files: `src/model/model.json`, `src/model/mobilenet_v2.bin`.
+Files: `model/model.json`, `model/mobilenet_v2.bin` (`src/model/` in the source).
 
 The MobileNet v2 (depth multiplier 1.0, 224x224) ImageNet classifier published
 by Google for TensorFlow.js at

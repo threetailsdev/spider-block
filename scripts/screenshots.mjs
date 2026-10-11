@@ -56,6 +56,29 @@ try {
   await options.waitForTimeout(300);
   await shot(options, 'settings-dark', { clip: { x: 0, y: 0, width: 1000, height: 900 } });
 
+  // The Chrome Web Store only takes 1280x800 or 640x400 screenshots.
+  await options.setViewportSize({ width: 1280, height: 800 });
+  await options.waitForTimeout(300);
+  await shot(options, 'store-settings-dark');
+  await options.emulateMedia({ colorScheme: 'light' });
+  await options.waitForTimeout(300);
+  await shot(options, 'store-settings');
+
+  // The popup, drawn over the demo page as if opened from the toolbar.
+  const dataUri = (buf) => `data:image/png;base64,${buf.toString('base64')}`;
+  const pageShot = await page.screenshot();
+  const popupShot = await popup.screenshot({ clip: { x: 0, y: 0, width: 358, height: await popup.evaluate(() => document.body.scrollHeight) } });
+  const composite = await context.newPage();
+  await composite.setViewportSize({ width: 1280, height: 800 });
+  await composite.setContent(`
+    <body style="margin:0;width:1280px;height:800px;position:relative;overflow:hidden">
+      <img src="${dataUri(pageShot)}" style="position:absolute;inset:0;filter:brightness(.92)">
+      <img src="${dataUri(popupShot)}" style="position:absolute;top:12px;right:16px;border-radius:8px;
+        box-shadow:0 8px 28px rgba(0,0,0,.28),0 0 0 1px rgba(0,0,0,.08)">
+    </body>`);
+  await composite.waitForTimeout(200);
+  await shot(composite, 'store-popup');
+
   // Store promo tile (440x280).
   const promo = await context.newPage();
   await promo.setViewportSize({ width: 440, height: 280 });

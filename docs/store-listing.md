@@ -39,13 +39,15 @@ No filter is perfect. If a spider slips through, right-click it and choose "Hide
 
 ## Screenshots
 
-Chrome needs 1280×800 or 640×400. Firefox accepts any size.
+Chrome needs 1280×800 or 640×400. Firefox accepts any size. All five below are 1280×800, in upload order:
 
 1. `page-cover.png`: a page with two spider photos hidden
 2. `reveal-panel.png`: what happens when you click a hidden image
-3. `page-scene.png`: the "calming picture" style
-4. `settings.png` / `settings-dark.png`: settings
-5. `popup.png`: the toolbar popup
+3. `store-popup.png`: the toolbar popup
+4. `page-scene.png`: the "calming picture" style
+5. `store-settings.png` (or `store-settings-dark.png`): settings
+
+`popup.png`, `settings.png` and `settings-dark.png` are other sizes, for the README and Firefox.
 
 Chrome small promo tile (440×280): `promo-440x280.png`. Store icon: `src/images/icon-128.png`.
 
@@ -63,7 +65,7 @@ Chrome small promo tile (440×280): `promo-440x280.png`. Store icon: `src/images
 
 **Data usage**: the extension does not collect or transmit any user data. Tick none of the data types, and certify the three statements (no selling, no unrelated use, no creditworthiness use).
 
-**Privacy policy URL**: <https://github.com/kolmstead17/spider-block/blob/main/PRIVACY.md> (or wherever you publish PRIVACY.md).
+**Privacy policy URL**: <https://github.com/threetailsdev/spider-block/blob/main/PRIVACY.md> (or wherever you publish PRIVACY.md).
 
 ## Firefox (AMO) notes
 
