@@ -15,7 +15,8 @@
       constructor() {
         super();
         this.attachShadow({ mode: 'open' }).innerHTML =
-          '<figure><img data-test="shadow" src="/img/shadow.png" alt="Jumping spider macro photo"></figure>';
+          '<figure><img data-test="shadow" src="/img/shadow.png" alt="Jumping spider macro photo"></figure>' +
+          '<figure><img data-test="shadow-slow" src="/slow/shadow-plain.png?delay=1500" alt="A teapot"></figure>';
       }
     });
     document.getElementById('host').append(document.createElement('photo-card'));

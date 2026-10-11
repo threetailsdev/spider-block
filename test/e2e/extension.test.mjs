@@ -114,6 +114,14 @@ test('handles CSS background images and images inside shadow DOM', async () => {
   await shadow.and(page.locator('[data-sb="blocked"]')).waitFor({ timeout: 10000 });
   const pos = await shadow.evaluate((el) => getComputedStyle(el).objectPosition);
   assert.equal(pos, '-99999px -99999px');
+
+  // An ordinary picture that finishes loading later is shown once it loads.
+  const slow = page.locator('[data-test="shadow-slow"]');
+  await slow.and(page.locator('[data-sb="ok"]')).waitFor({ timeout: 10000 });
+  await page.waitForFunction(() => {
+    const img = document.querySelector('photo-card').shadowRoot.querySelector('[data-test="shadow-slow"]');
+    return getComputedStyle(img).opacity === '1';
+  });
 });
 
 test('hidden background images are rechecked by their own picture, not the cover', async () => {

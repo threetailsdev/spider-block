@@ -565,6 +565,9 @@
         if (!shadowRoots.has(root)) {
           shadowRoots.add(root);
           observer.observe(root, OBSERVE);
+          // Load events do not leave a shadow root, so the document never hears them.
+          root.addEventListener('load', onMediaEvent, true);
+          root.addEventListener('error', onMediaEvent, true);
           scanTree(root);
         }
       } else if (el.localName.includes('-')) {
@@ -1287,6 +1290,10 @@
     unwatchSettings();
     doc.removeEventListener('load', onMediaEvent, true);
     doc.removeEventListener('error', onMediaEvent, true);
+    for (const root of shadowRoots) {
+      root.removeEventListener('load', onMediaEvent, true);
+      root.removeEventListener('error', onMediaEvent, true);
+    }
     doc.removeEventListener('contextmenu', onContextMenu, true);
     window.removeEventListener('click', onClick, true);
     try {
