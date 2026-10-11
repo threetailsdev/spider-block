@@ -15,7 +15,8 @@
     "@tensorflow/tfjs-core": "4.22.0"
   },
   "devDependencies": {
-    "playwright": "1.56.1"
+    "playwright": "1.56.1",
+    "puppeteer-core": "24.43.1"
   },
   "scripts": {
     "build": "node scripts/build.mjs",
@@ -25,6 +26,7 @@
     "build:safari": "node scripts/build.mjs safari",
     "test": "node --test \"test/unit/*.test.mjs\"",
     "test:e2e": "npm run build:chrome && node --test --test-concurrency=1 \"test/e2e/*.test.mjs\"",
+    "test:firefox": "npm run build:firefox && node --test --test-concurrency=1 \"test/firefox/*.test.mjs\"",
     "test:ai": "npm run build:chrome && node --test test/ai.test.mjs",
     "lint": "npm run build:firefox && npx --yes web-ext@10 lint --source-dir dist/firefox",
     "icons": "node scripts/render-icons.mjs",

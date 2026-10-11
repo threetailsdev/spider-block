@@ -113,7 +113,9 @@ function manifest(target, version) {
             strict_min_version: '140.0',
             data_collection_permissions: { required: ['none'] },
           },
-          gecko_android: { strict_min_version: '142.0' },
+          // No gecko_android yet: Firefox for Android has no right-click menu or
+          // keyboard shortcut, so there is no way to hide a spider that slipped
+          // through, and the add-on has not been tried on a phone.
         },
       };
     case 'safari':
