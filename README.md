@@ -135,6 +135,10 @@ Spider Block does not collect, store or send any personal data, and has no serve
 - **Gentle exposure mode** (opt-in, ideally designed with therapists): gradually reveal blurred or cartoon versions for people working on their fear.
 - **Translations** of the extension's pages.
 
+## Support
+
+Spider Block is free and has no ads or tracking. If it helps you, you can [buy me a coffee on Ko-fi](https://ko-fi.com/KOFI_USERNAME). It's entirely optional and every feature stays free.
+
 ## License
 
 MIT, see [LICENSE](LICENSE). TensorFlow.js and the MobileNet v2 model are Apache-2.0, see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
