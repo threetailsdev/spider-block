@@ -1,6 +1,6 @@
 {
   "name": "spider-block",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "description": "A browser extension that hides spider images so people with arachnophobia can browse comfortably.",
   "license": "MIT",

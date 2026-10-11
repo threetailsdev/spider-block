@@ -16,7 +16,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = path.join(ROOT, 'src');
 const DIST = path.join(ROOT, 'dist');
 const TARGETS = ['chrome', 'edge', 'firefox', 'safari'];
-const FIREFOX_ID = 'spider-block@kolmstead17.github.io';
+const FIREFOX_ID = 'spider-block@threetailsdev.github.io';
 
 // TensorFlow.js runs the image classifier. Copied unmodified from npm.
 const VENDOR = {
@@ -247,6 +247,8 @@ async function build(target, version, shared) {
   for (const [name, from] of Object.entries(VENDOR)) {
     files.set(`vendor/${name}`, await fs.readFile(path.join(ROOT, 'node_modules', from)));
   }
+  // The Apache-2.0 notices for TensorFlow.js and the model travel with the package.
+  for (const name of ['LICENSE', 'THIRD_PARTY_NOTICES.md']) files.set(name, await fs.readFile(path.join(ROOT, name)));
   const m = manifest(target, version);
   files.set('manifest.json', Buffer.from(JSON.stringify(m, null, 2) + '\n'));
 

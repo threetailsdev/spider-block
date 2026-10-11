@@ -31,4 +31,4 @@ The second step is the same kind of request your browser already made to display
 
 ## Contact
 
-Questions or concerns: please open an issue at <https://github.com/kolmstead17/spider-block/issues>.
+Questions or concerns: please open an issue at <https://github.com/threetailsdev/spider-block/issues>.
