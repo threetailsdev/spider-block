@@ -24,6 +24,10 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: End-to-end tests (Chromium)
         run: npm run test:e2e
+      - name: End-to-end tests (Firefox)
+        run: |
+          firefox --version
+          FIREFOX_BIN="$(readlink -f "$(command -v firefox)")" npm run test:firefox
       - uses: actions/upload-artifact@v4
         with:
           name: spider-block-packages

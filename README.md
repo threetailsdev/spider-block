@@ -69,6 +69,7 @@ page loads ─► content script (every page and frame)
 npm run build            # all browsers (or build:chrome, build:firefox, …)
 npm test                 # unit tests (word matching, settings)
 npm run test:e2e         # loads dist/chrome into Chromium and tests real pages
+npm run test:firefox     # the same for dist/firefox in Firefox (set FIREFOX_BIN if it isn't found)
 npm run lint             # Mozilla's add-on linter on the Firefox build
 npm run test:ai          # opt-in: checks recognition with real photos (see warning below)
 npm run icons            # re-render the PNG icons from src/images/icon*.svg
@@ -104,10 +105,11 @@ Spider Block does not collect, store or send any personal data, and has no serve
 - Images drawn on a `<canvas>`, inside closed shadow DOM, or in browser-internal pages can't be checked.
 - When the browser starts, the first images take a moment longer while the model loads.
 - Some sites refuse to send their images to extensions. You choose whether those are shown or kept covered.
-- **Tested**: Chrome/Chromium (automated end-to-end tests). The Firefox build passes Mozilla's official linter, but has not yet been run in Firefox by the automated tests. Safari is not supported yet. Please report problems.
+- **Tested**: Chrome/Chromium and Firefox desktop (automated end-to-end tests, Firefox 140 ESR and newer). **Firefox for Android** is not supported yet: it has no right-click menu, so a missed spider can't be hidden. Safari is not supported yet. Please report problems.
 
 ## Ideas for the future
 
+- **Firefox for Android**: a touch-friendly way to hide an image that slipped through (phones have no right-click menu), then tested on a phone and enabled with `gecko_android`.
 - **Watch videos too**: sample frames of playing videos (YouTube etc.) and pause and cover the video when a spider appears.
 - **A spider-specific model**: fine-tune a small model on spiders vs. look-alikes, including drawings and cartoons, and use the GPU (WebGPU) where available.
 - **Shared corrections (opt-in)**: let users anonymously share image fingerprints they've hidden, so a miss found by one person protects everyone.
