@@ -40,13 +40,13 @@ npm run build          # builds dist/chrome, dist/edge, dist/firefox, dist/safar
 
 **Chrome / Edge / Brave**: open `chrome://extensions` (or `edge://extensions`), turn on *Developer mode*, click *Load unpacked* and choose `dist/chrome` (or `dist/edge`).
 
-**Safari** (needs a Mac with Xcode):
+**Safari**: on a Mac with Xcode,
 
 ```sh
-xcrun safari-web-extension-converter dist/safari --app-name "Spider Block" --bundle-identifier com.example.spiderblock
+xcrun safari-web-extension-packager dist/safari --app-name "Spider Block" --bundle-identifier io.github.threetailsdev.spiderblock
 ```
 
-Open the generated Xcode project, run it, then enable the extension in Safari → Settings → Extensions and allow it on all websites. For local testing without signing, turn on *Allow unsigned extensions* in Safari's Developer settings. The same project can target iPhone and iPad.
+Run the generated Xcode project, turn on *Allow unsigned extensions* in Safari's Developer settings, then enable the extension in Safari → Settings → Extensions and allow it on all websites. Without a Mac, App Store Connect can package `dist/spider-block-safari-*.zip` for TestFlight. [docs/safari.md](docs/safari.md) has both routes, what to test, and how to submit.
 
 ## Sharing it with others
 
@@ -57,7 +57,7 @@ Publishing to the official stores lets people install it with one click and get 
 | [Firefox Add-ons](https://addons.mozilla.org/developers/) | Free | `dist/spider-block-firefox-*.zip` | Reviewers may ask for the source: upload a zip of this repo; it builds with `npm ci && npm run build:firefox`. Change the add-on ID in `scripts/build.mjs` first if you want your own. |
 | [Chrome Web Store](https://chrome.google.com/webstore/devconsole) | $5 once | `dist/spider-block-chrome-*.zip` | Needs the privacy policy URL (you can link to [PRIVACY.md](PRIVACY.md) on GitHub). |
 | [Edge Add-ons](https://partner.microsoft.com/dashboard/microsoftedge/) | Free | `dist/spider-block-edge-*.zip` | |
-| Safari / App Store | $99/year Apple Developer Program | Xcode project (see above) | Submitted as a Mac (and optionally iOS) app through App Store Connect. |
+| Safari / App Store | $99/year Apple Developer Program | `dist/spider-block-safari-*.zip` or the Xcode project | Submitted as a Mac and/or iPhone/iPad app through App Store Connect. See [docs/safari.md](docs/safari.md). |
 
 Bump `version` in `package.json` before each new upload.
 

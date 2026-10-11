@@ -84,6 +84,7 @@ Chrome small promo tile (440×280): `promo-440x280.png`. Store icon: `src/images
 
 ## Safari / App Store notes
 
-- Create the Xcode project with `xcrun safari-web-extension-converter dist/safari` and set your own bundle identifier and team.
+- Build and packaging steps are in [safari.md](safari.md). Bundle ID: `io.github.threetailsdev.spiderblock`.
+- App icon: `docs/safari/app-icon-1024.png`.
 - App Store review asks for an app description and screenshots of the containing app. The generated app only explains how to enable the extension, which is acceptable.
 - Privacy "nutrition label": Data Not Collected.
