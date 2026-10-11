@@ -12,8 +12,19 @@ Hides pictures of spiders as you browse, for people with arachnophobia. Works pr
 
 ## Category
 
-- Chrome / Edge: Accessibility (alternative: Productivity)
+- Chrome: Accessibility (under "Make Chrome Yours"). Alternative: Well-being (under "Lifestyle").
+- Edge: Accessibility (alternative: Productivity)
 - Firefox: Privacy & Security, or Appearance
+
+## Language
+
+English. The listing is English only; the extension itself also recognises spider words in more than 40 languages.
+
+## Links
+
+- Homepage URL: <https://github.com/threetailsdev/spider-block>
+- Support URL: <https://github.com/threetailsdev/spider-block/issues>
+- Privacy policy URL: <https://github.com/threetailsdev/spider-block/blob/main/PRIVACY.md>
 
 ## Full description
 
@@ -63,9 +74,17 @@ Chrome small promo tile (440×280): `promo-440x280.png`. Store icon: `src/images
 | `scripting` | Starts protection in tabs that were already open when the extension was installed or updated, without the user having to reload them. |
 | Remote code | No. All code, including the WebAssembly runtime and the image-recognition model, is included in the package. `wasm-unsafe-eval` is only used to run the bundled WebAssembly. |
 
-**Data usage**: the extension does not collect or transmit any user data. Tick none of the data types, and certify the three statements (no selling, no unrelated use, no creditworthiness use).
+**Data usage**: the extension does not collect or transmit any user data. Tick none of the data types, and certify the three statements (no selling, no unrelated use, no creditworthiness use). "Website content" stays unticked too: the extension reads page text and images only to decide what to hide, on the device, and never sends them anywhere.
 
-**Privacy policy URL**: <https://github.com/threetailsdev/spider-block/blob/main/PRIVACY.md> (or wherever you publish PRIVACY.md).
+**Privacy policy URL**: <https://github.com/threetailsdev/spider-block/blob/main/PRIVACY.md>
+
+## Test instructions (Chrome Web Store "Test instructions" tab)
+
+No account or login is needed. Paste this:
+
+```
+No sign-in is required. After installing, open https://www.google.com/search?q=spider&udm=2 (Google Images search for "spider"). Every image on the page is hidden behind a soft cover, because the page is about spiders. Click a hidden image to see the "show this image?" prompt. The toolbar popup can pause Spider Block or turn it off for one site. Press Alt+Shift+H on any page to hide all images, and again to show them. The extension makes no network requests other than re-downloading images from the sites that show them, to check them with the bundled on-device model.
+```
 
 ## Firefox (AMO) notes
 

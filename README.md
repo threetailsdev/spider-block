@@ -55,7 +55,7 @@ Publishing to the official stores lets people install it with one click and get 
 | Store | Cost | Upload | Notes |
 | --- | --- | --- | --- |
 | [Firefox Add-ons](https://addons.mozilla.org/developers/) | Free | `dist/spider-block-firefox-*.zip` | Reviewers may ask for the source: upload a zip of this repo; it builds with `npm ci && npm run build:firefox`. Change the add-on ID in `scripts/build.mjs` first if you want your own. |
-| [Chrome Web Store](https://chrome.google.com/webstore/devconsole) | $5 once | `dist/spider-block-chrome-*.zip` | Needs the privacy policy URL (you can link to [PRIVACY.md](PRIVACY.md) on GitHub). |
+| [Chrome Web Store](https://chrome.google.com/webstore/devconsole) | $5 once | `dist/spider-block-chrome-*.zip` | Step-by-step guide: [docs/chrome-web-store.md](docs/chrome-web-store.md). |
 | [Edge Add-ons](https://partner.microsoft.com/dashboard/microsoftedge/) | Free | `dist/spider-block-edge-*.zip` | |
 | Safari / App Store | $99/year Apple Developer Program | Xcode project (see above) | Submitted as a Mac (and optionally iOS) app through App Store Connect. |
 
