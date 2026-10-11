@@ -48,19 +48,6 @@ xcrun safari-web-extension-converter dist/safari --app-name "Spider Block" --bun
 
 Open the generated Xcode project, run it, then enable the extension in Safari → Settings → Extensions and allow it on all websites. For local testing without signing, turn on *Allow unsigned extensions* in Safari's Developer settings. The same project can target iPhone and iPad.
 
-## Sharing it with others
-
-Publishing to the official stores lets people install it with one click and get automatic updates. [docs/store-listing.md](docs/store-listing.md) has ready-to-paste descriptions, the permission justifications reviewers ask for, and the privacy answers.
-
-| Store | Cost | Upload | Notes |
-| --- | --- | --- | --- |
-| [Firefox Add-ons](https://addons.mozilla.org/developers/) | Free | `dist/spider-block-firefox-*.zip` | Reviewers may ask for the source: upload a zip of this repo; it builds with `npm ci && npm run build:firefox`. Change the add-on ID in `scripts/build.mjs` first if you want your own. |
-| [Chrome Web Store](https://chrome.google.com/webstore/devconsole) | $5 once | `dist/spider-block-chrome-*.zip` | Step-by-step guide: [docs/chrome-web-store.md](docs/chrome-web-store.md). |
-| [Edge Add-ons](https://partner.microsoft.com/dashboard/microsoftedge/) | Free | `dist/spider-block-edge-*.zip` | |
-| Safari / App Store | $99/year Apple Developer Program | Xcode project (see above) | Submitted as a Mac (and optionally iOS) app through App Store Connect. |
-
-Bump `version` in `package.json` before each new upload.
-
 ## How it works
 
 ```
